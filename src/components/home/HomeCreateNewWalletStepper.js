@@ -10,6 +10,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
 
 // Formik
 import { Formik, Form } from "formik";
@@ -69,7 +70,7 @@ const HomeCreateNewWalletStepper = () => {
           </Box>
         </>
       ) : (
-        <>
+        <Container maxWidth="xs" sx={{ mt: 3 }}>
           <Formik
             initialValues={{
               username: "",
@@ -116,7 +117,7 @@ const HomeCreateNewWalletStepper = () => {
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
           </Box>
-        </>
+        </Container>
       )}
     </>
   );
