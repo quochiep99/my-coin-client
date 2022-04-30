@@ -9,15 +9,15 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 
 // Formik
-import { Formik, Form, Field } from "formik";
+import { Field } from "formik";
 
 // Formik Mui
 import { TextField } from "formik-mui";
 
-const PickYourUserNameStep = () => {
+const PickYourUserNameStep = ({ onClick }) => {
   return (
     <Container maxWidth="xs" sx={{ mt: 3 }}>
-      <Card sx={{ height: 400 }}>
+      <Card>
         <CardContent>
           <Typography variant="h6" component="div" sx={{ fontSize: "1.5rem" }}>
             Pick your username
@@ -26,34 +26,31 @@ const PickYourUserNameStep = () => {
             Coinbase Wallet users can send you payments to this name
           </Typography>
 
-          <Formik
-            initialValues={{
-              username: "",
-            }}
+          <Grid
+            container
+            direction="column"
+            justifyContent="space-between"
+            sx={{ mt: 4, height: 300 }}
           >
-            <Form>
-              <Grid
-                container
-                direction="column"
-                justifyContent="space-between"
-                sx={{ height: 250, mt: 3 }}
+            <Grid item>
+              <Field
+                component={TextField}
+                name="username"
+                label="Username"
+                fullWidth
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                onClick={onClick}
               >
-                <Grid item>
-                  <Field
-                    component={TextField}
-                    name="username"
-                    label="Username"
-                    fullWidth
-                  />
-                </Grid>
-                <Grid item>
-                  <Button variant="contained" color="primary" fullWidth>
-                    Submit
-                  </Button>
-                </Grid>
-              </Grid>
-            </Form>
-          </Formik>
+                Submit
+              </Button>
+            </Grid>
+          </Grid>
         </CardContent>
       </Card>
     </Container>

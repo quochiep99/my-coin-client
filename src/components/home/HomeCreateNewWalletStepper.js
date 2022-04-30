@@ -11,17 +11,17 @@ import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
+// Formik
+import { Formik, Form } from "formik";
+
 // MY COMPONENTS
 import PickYourUserNameStep from "./PickYourUserNameStep";
+import BackupYourWalletStep from "./BackupYourWalletStep";
 
-const steps = [
-  "Pick your username",
-  "Create an ad group",
-  "Create an ad",
-];
+const steps = ["Pick your username", "Backup your wallet", "Create an ad"];
 
 const HomeCreateNewWalletStepper = () => {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [skipped, setSkipped] = useState(new Set());
 
   const isStepOptional = (step) => {
@@ -99,8 +99,28 @@ const HomeCreateNewWalletStepper = () => {
         </>
       ) : (
         <>
-          <PickYourUserNameStep />
-          {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
+          <Formik
+            initialValues={{
+              username: "",
+              mnemonic:
+                "harvest fluid gesture dismiss alone park village burst achieve ring oil neutral",
+            }}
+          >
+            {(formik) => (
+              <Form>
+                {activeStep === 0 && (
+                  <PickYourUserNameStep onClick={handleNext} />
+                )}
+                {activeStep === 1 && (
+                  <BackupYourWalletStep onClick={handleNext} formik={formik} />
+                )}
+                {/* {activeStep === 0 && (
+                <PickYourUserNameStep onClick={handleNext} />
+              )} */}
+              </Form>
+            )}
+          </Formik>
+
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
