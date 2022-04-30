@@ -9,7 +9,6 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
 // Formik
@@ -27,11 +26,10 @@ const steps = [
   "Backup your wallet",
   "You saved it, right ?",
   "Create password",
-  "Your wallet is ready",
 ];
 
 const HomeCreateNewWalletStepper = () => {
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(0);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -39,10 +37,6 @@ const HomeCreateNewWalletStepper = () => {
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleReset = () => {
-    setActiveStep(0);
   };
 
   return (
@@ -60,15 +54,9 @@ const HomeCreateNewWalletStepper = () => {
         })}
       </Stepper>
       {activeStep === steps.length ? (
-        <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
-        </>
+        <Container maxWidth="xs" sx={{ mt: 3 }}>
+          <YourWalletIsReadyStep onClick={handleNext} />
+        </Container>
       ) : (
         <Container maxWidth="xs" sx={{ mt: 3 }}>
           <Formik
@@ -96,9 +84,6 @@ const HomeCreateNewWalletStepper = () => {
                 {activeStep === 3 && (
                   <CreatePasswordStep onClick={handleNext} />
                 )}
-                {activeStep === 4 && (
-                  <YourWalletIsReadyStep onClick={handleNext} />
-                )}
               </Form>
             )}
           </Formik>
@@ -113,9 +98,6 @@ const HomeCreateNewWalletStepper = () => {
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleNext}>
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </Button>
           </Box>
         </Container>
       )}
