@@ -66,8 +66,8 @@ const CreatePasswordStep = ({ onClick }) => {
               variant="contained"
               color="primary"
               fullWidth
-              onClick={onClick}
               sx={{ textTransform: "none" }}
+              type="submit"
             >
               Submit
             </Button>

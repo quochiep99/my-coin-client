@@ -58,7 +58,7 @@ const HomeCreateNewWalletStepper = () => {
           <YourWalletIsReadyStep onClick={handleNext} />
         </Container>
       ) : (
-        <Container maxWidth="xs" sx={{ mt: 3 }}>
+        <Container maxWidth="xs" sx={{ mt: 5 }}>
           <Formik
             initialValues={{
               username: "",
@@ -68,6 +68,10 @@ const HomeCreateNewWalletStepper = () => {
               lastWord: "",
               password: "",
               verifyPassword: "",
+            }}
+            onSubmit={(values) => {
+              console.log(values);
+              handleNext();
             }}
           >
             {(formik) => (
