@@ -14,17 +14,17 @@ import { Field } from "formik";
 // Formik Mui
 import { TextField } from "formik-mui";
 
-const YouSavedItRightStep = ({ onClick }) => {
+const CreatePasswordStep = ({ formik }) => {
   return (
     <Container maxWidth="xs" sx={{ mt: 3 }}>
       <Card>
         <CardContent>
           <Typography variant="h6" component="div" sx={{ fontSize: "1.5rem" }}>
-            You saved it, right ?
+            Create Password
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Verify that you saved your seed phrase by enter the correct first
-            (1st) and last (12th) word in.
+            Set a password to unlock your wallet each time you use your
+            computer. It can't be used to recover your wallet
           </Typography>
           <Grid
             container
@@ -56,7 +56,6 @@ const YouSavedItRightStep = ({ onClick }) => {
                 color="primary"
                 fullWidth
                 sx={{ textTransform: "none" }}
-                onClick={onClick}
               >
                 Submit
               </Button>
@@ -68,4 +67,4 @@ const YouSavedItRightStep = ({ onClick }) => {
   );
 };
 
-export default YouSavedItRightStep;
+export default CreatePasswordStep;

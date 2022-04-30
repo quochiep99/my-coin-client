@@ -18,11 +18,13 @@ import { Formik, Form } from "formik";
 import PickYourUserNameStep from "./PickYourUserNameStep";
 import BackupYourWalletStep from "./BackupYourWalletStep";
 import YouSavedItRightStep from "./YouSavedItRightStep";
+import CreatePasswordStep from "./CreatePasswordStep";
 
 const steps = [
   "Pick your username",
   "Backup your wallet",
   "You saved it, right ?",
+  "Create password",
 ];
 
 const HomeCreateNewWalletStepper = () => {
@@ -121,7 +123,12 @@ const HomeCreateNewWalletStepper = () => {
                 {activeStep === 1 && (
                   <BackupYourWalletStep onClick={handleNext} formik={formik} />
                 )}
-                {activeStep === 2 && <YouSavedItRightStep formik={formik} />}
+                {activeStep === 2 && (
+                  <YouSavedItRightStep onClick={handleNext} />
+                )}
+                {activeStep === 3 && (
+                  <CreatePasswordStep onClick={handleNext} />
+                )}
               </Form>
             )}
           </Formik>
