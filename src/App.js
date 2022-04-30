@@ -14,6 +14,7 @@ const App = () => {
       <CssBaseline />
       <Routes>
         <Route path="/" element={<Home />} />
+        {/* <Route path="/wallets/new" element={} /> */}
       </Routes>
     </BrowserRouter>
   );

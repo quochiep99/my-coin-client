@@ -15,9 +15,9 @@ import AddIcon from "@mui/icons-material/Add";
 import FileDownloadOutlinedIcon from "@mui/icons-material/FileDownloadOutlined";
 import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
 
-const HomeCoinbaseWalletCard = () => {
+const HomeCoinbaseWalletCard = ({ onClick }) => {
   return (
-    <Card sx={{ width: 356.4 }}>
+    <Card sx={{ width: 360 }}>
       <CardContent sx={{ height: 300 }}>
         <AccountBalanceWalletOutlinedIcon />
         <Typography variant="h6" component="div" sx={{ fontSize: "1.5rem" }}>
@@ -33,7 +33,8 @@ const HomeCoinbaseWalletCard = () => {
             <Button
               variant="contained"
               fullWidth
-              sx={{ mb: 2, textTransform: "none " }}
+              sx={{ mb: 2, textTransform: "none ", pt: 1.5 }}
+              onClick={onClick}
             >
               <Grid container justifyContent="space-between">
                 <Grid item>Create new wallet</Grid>
@@ -45,7 +46,7 @@ const HomeCoinbaseWalletCard = () => {
             <Button
               variant="outlined"
               fullWidth
-              sx={{ mb: 2, textTransform: "none " }}
+              sx={{ mb: 2, textTransform: "none ", pt: 1.5 }}
             >
               <Grid container justifyContent="space-between">
                 <Grid item>Import an existing wallet</Grid>
