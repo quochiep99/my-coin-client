@@ -14,7 +14,7 @@ import { Field } from "formik";
 // Formik Mui
 import { TextField } from "formik-mui";
 
-const CreatePasswordStep = ({ formik }) => {
+const CreatePasswordStep = ({ onClick }) => {
   return (
     <Container maxWidth="xs" sx={{ mt: 3 }}>
       <Card>
@@ -56,6 +56,7 @@ const CreatePasswordStep = ({ formik }) => {
                 color="primary"
                 fullWidth
                 sx={{ textTransform: "none" }}
+                onClick={onClick}
               >
                 Submit
               </Button>

@@ -19,54 +19,25 @@ import PickYourUserNameStep from "./PickYourUserNameStep";
 import BackupYourWalletStep from "./BackupYourWalletStep";
 import YouSavedItRightStep from "./YouSavedItRightStep";
 import CreatePasswordStep from "./CreatePasswordStep";
+import YourWalletIsReadyStep from "./YourWalletIsReadyStep";
 
 const steps = [
   "Pick your username",
   "Backup your wallet",
   "You saved it, right ?",
   "Create password",
+  "Your wallet is ready",
 ];
 
 const HomeCreateNewWalletStepper = () => {
-  const [activeStep, setActiveStep] = useState(2);
-  const [skipped, setSkipped] = useState(new Set());
-
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
-
-  const isStepSkipped = (step) => {
-    return skipped.has(step);
-  };
+  const [activeStep, setActiveStep] = useState(4);
 
   const handleNext = () => {
-    let newSkipped = skipped;
-    if (isStepSkipped(activeStep)) {
-      newSkipped = new Set(newSkipped.values());
-      newSkipped.delete(activeStep);
-    }
-
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped(newSkipped);
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
-
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
   };
 
   const handleReset = () => {
@@ -79,14 +50,7 @@ const HomeCreateNewWalletStepper = () => {
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
-          if (isStepOptional(index)) {
-            labelProps.optional = (
-              <Typography variant="caption">Optional</Typography>
-            );
-          }
-          if (isStepSkipped(index)) {
-            stepProps.completed = false;
-          }
+
           return (
             <Step key={label} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
@@ -129,6 +93,9 @@ const HomeCreateNewWalletStepper = () => {
                 {activeStep === 3 && (
                   <CreatePasswordStep onClick={handleNext} />
                 )}
+                {activeStep === 4 && (
+                  <YourWalletIsReadyStep onClick={handleNext} />
+                )}
               </Form>
             )}
           </Formik>
@@ -143,12 +110,6 @@ const HomeCreateNewWalletStepper = () => {
               Back
             </Button>
             <Box sx={{ flex: "1 1 auto" }} />
-            {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Skip
-              </Button>
-            )}
-
             <Button onClick={handleNext}>
               {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
