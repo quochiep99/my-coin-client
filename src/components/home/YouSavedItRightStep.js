@@ -14,38 +14,47 @@ import { Field } from "formik";
 // Formik Mui
 import { TextField } from "formik-mui";
 
-const PickYourUserNameStep = ({ onClick }) => {
+const YouSavedItRightStep = ({ formik }) => {
   return (
     <Container maxWidth="xs" sx={{ mt: 3 }}>
       <Card>
         <CardContent>
           <Typography variant="h6" component="div" sx={{ fontSize: "1.5rem" }}>
-            Pick your username
+            You saved it, right ?
           </Typography>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Coinbase Wallet users can send you payments to this name
+            Verify that you saved your seed phrase by enter the correct first
+            (1st) and last (12th) word in.
           </Typography>
-
           <Grid
             container
             direction="column"
             justifyContent="space-between"
             sx={{ mt: 4, height: 300 }}
           >
-            <Grid item>
-              <Field
-                component={TextField}
-                name="username"
-                label="Username"
-                fullWidth
-              />
+            <Grid container item direction="column" spacing={3}>
+              <Grid item>
+                <Field
+                  component={TextField}
+                  name="firstWord"
+                  label="First word"
+                  fullWidth
+                />
+              </Grid>
+              <Grid item>
+                <Field
+                  component={TextField}
+                  name="lastWord"
+                  label="Last word"
+                  fullWidth
+                />
+              </Grid>
             </Grid>
             <Grid item>
               <Button
                 variant="contained"
                 color="primary"
                 fullWidth
-                onClick={onClick}
                 sx={{ textTransform: "none" }}
               >
                 Submit
@@ -58,4 +67,4 @@ const PickYourUserNameStep = ({ onClick }) => {
   );
 };
 
-export default PickYourUserNameStep;
+export default YouSavedItRightStep;

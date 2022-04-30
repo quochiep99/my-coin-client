@@ -77,6 +77,7 @@ const BackupYourWalletStep = ({ onClick, formik }) => {
                 color="primary"
                 fullWidth
                 onClick={onClick}
+                sx={{ textTransform: "none" }}
               >
                 Continue
               </Button>
