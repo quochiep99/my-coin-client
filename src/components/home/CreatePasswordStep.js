@@ -3,7 +3,6 @@ import React from "react";
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -17,52 +16,70 @@ import { TextField } from "formik-mui";
 const CreatePasswordStep = ({ onClick }) => {
   return (
     <Container maxWidth="xs" sx={{ mt: 3 }}>
-      <Card>
-        <CardContent>
-          <Typography variant="h6" component="div" sx={{ fontSize: "1.5rem" }}>
-            Create Password
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Set a password to unlock your wallet each time you use your
-            computer. It can't be used to recover your wallet
-          </Typography>
+      <Card raised sx={{ height: 400, py: 2, px: 2.5 }}>
+        <Grid container direction="column" sx={{ height: "100%" }}>
+          <Grid item xs={1}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ fontSize: "1.5rem" }}
+            >
+              Create Password
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Typography color="text.secondary">
+              Set a password to unlock your wallet each time you use your
+              computer. It can't be used to recover your wallet
+            </Typography>
+          </Grid>
           <Grid
             container
+            item
+            xs={7}
+            justifyContent="center"
             direction="column"
-            justifyContent="space-between"
-            sx={{ mt: 4, height: 300 }}
+            spacing={2}
           >
-            <Grid container item direction="column" spacing={3}>
-              <Grid item>
-                <Field
-                  component={TextField}
-                  name="firstWord"
-                  label="First word"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item>
-                <Field
-                  component={TextField}
-                  name="lastWord"
-                  label="Last word"
-                  fullWidth
-                />
-              </Grid>
+            <Grid item>
+              <Field
+                component={TextField}
+                name="password"
+                label="Password"
+                fullWidth
+                type="password"
+              />
             </Grid>
+            <Grid item>
+              <Field
+                component={TextField}
+                name="verifyPassword"
+                label="Verify password"
+                fullWidth
+                type="password"
+              />
+            </Grid>
+          </Grid>
+          <Grid
+            item
+            container
+            direction="column"
+            justifyContent="flex-end"
+            xs={1}
+          >
             <Grid item>
               <Button
                 variant="contained"
                 color="primary"
                 fullWidth
-                sx={{ textTransform: "none" }}
                 onClick={onClick}
+                sx={{ textTransform: "none" }}
               >
                 Submit
               </Button>
             </Grid>
           </Grid>
-        </CardContent>
+        </Grid>
       </Card>
     </Container>
   );

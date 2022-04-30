@@ -30,7 +30,7 @@ const steps = [
 ];
 
 const HomeCreateNewWalletStepper = () => {
-  const [activeStep, setActiveStep] = useState(4);
+  const [activeStep, setActiveStep] = useState(3);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -77,6 +77,8 @@ const HomeCreateNewWalletStepper = () => {
                 "harvest fluid gesture dismiss alone park village burst achieve ring oil neutral",
               firstWord: "",
               lastWord: "",
+              password: "",
+              verifyPassword: "",
             }}
           >
             {(formik) => (

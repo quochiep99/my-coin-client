@@ -3,7 +3,6 @@ import React from "react";
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -28,21 +27,29 @@ const BackupYourWalletStep = ({ onClick, formik }) => {
 
   return (
     <Container maxWidth="xs" sx={{ mt: 3 }}>
-      <Card>
-        <CardContent>
-          <Typography variant="h6" component="div" sx={{ fontSize: "1.5rem" }}>
-            Backup your wallet
-          </Typography>
-          <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            Save these 12 words to a password manager, or write down and store
-            in a secure place. Do not share with anyone.
-          </Typography>
-
+      <Card raised sx={{ height: 400, py: 2, px: 2.5 }}>
+        <Grid container direction="column" sx={{ height: "100%" }}>
+          <Grid item xs={1}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ fontSize: "1.5rem" }}
+            >
+              Backup your wallet
+            </Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <Typography color="text.secondary">
+              Save these 12 words to a password manager, or write down and store
+              in a secure place. Do not share with anyone.
+            </Typography>
+          </Grid>
           <Grid
             container
+            item
+            xs={5}
+            justifyContent="center"
             direction="column"
-            justifyContent="space-between"
-            sx={{ mt: 4, height: 300 }}
           >
             <Grid item>
               <Field
@@ -71,6 +78,14 @@ const BackupYourWalletStep = ({ onClick, formik }) => {
                 rows={3}
               />
             </Grid>
+          </Grid>
+          <Grid
+            item
+            container
+            direction="column"
+            justifyContent="flex-end"
+            xs={3}
+          >
             <Grid item>
               <Button
                 variant="contained"
@@ -83,7 +98,7 @@ const BackupYourWalletStep = ({ onClick, formik }) => {
               </Button>
             </Grid>
           </Grid>
-        </CardContent>
+        </Grid>
       </Card>
     </Container>
   );
