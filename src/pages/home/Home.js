@@ -11,8 +11,8 @@ import HomeImportWalletStepper from "../../components/home/HomeImportWalletStepp
 const Home = () => {
   const [show, setShow] = useState({
     homeCoinbaseWalletCard: false,
-    homeCreateNewWalletStepper: true,
-    homeImportWalletStepper: false,
+    homeCreateNewWalletStepper: false,
+    homeImportWalletStepper: true,
   });
 
   const handleClickCreateNewWallet = () => {
