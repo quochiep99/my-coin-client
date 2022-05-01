@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // HOOKS
 import { useState } from "react";
@@ -24,6 +24,9 @@ import YouSavedItRightStep from "./YouSavedItRightStep";
 import CreatePasswordStep from "./CreatePasswordStep";
 import YourWalletIsReadyStep from "./YourWalletIsReadyStep";
 
+// MNEMONIC
+import { ethers } from "ethers";
+
 const steps = [
   "Pick your username",
   "Backup your wallet",
@@ -42,6 +45,7 @@ const HomeCreateNewWalletStepperSchema = yup.object().shape({
 
 const HomeCreateNewWalletStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const [mnemonic, setMnemonic] = useState("");
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -50,6 +54,11 @@ const HomeCreateNewWalletStepper = () => {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
+
+  useEffect(() => {
+    const mnemonic = ethers.Wallet.createRandom()._mnemonic().phrase;
+    setMnemonic(mnemonic);
+  }, []);
 
   return (
     <>
@@ -74,25 +83,41 @@ const HomeCreateNewWalletStepper = () => {
           <Formik
             initialValues={{
               username: "",
-              mnemonic:
-                "harvest fluid gesture dismiss alone park village burst achieve ring oil neutral",
+              mnemonic: mnemonic,
               firstWord: "",
               lastWord: "",
               password: "",
               verifyPassword: "",
             }}
-            onSubmit={(values) => {
-              console.log(values);
-              handleNext();
+            onSubmit={async (values) => {
+              try {
+                console.log(values);
+                const response = await fetch("http://localhost:5000/wallets", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify(values),
+                });
+
+                // request success
+                if (response.ok) {
+                  handleNext();
+                }
+              } catch (err) {
+                console.log(err);
+              }
             }}
             validationSchema={HomeCreateNewWalletStepperSchema}
-            validateOnBlur={false}
+            // validateOnBlur={false}
+            enableReinitialize
           >
             {(formik) => (
               <Form>
                 {activeStep === 0 && (
                   <PickYourUserNameStep
                     onClick={() => {
+                      formik.setFieldTouched("username");
                       if (formik.touched.username && !formik.errors.username) {
                         handleNext();
                       }

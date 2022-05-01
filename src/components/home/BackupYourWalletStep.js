@@ -43,7 +43,7 @@ const BackupYourWalletStep = ({ onClick, formik }) => {
             <Field
               component={TextField}
               name="mnemonic"
-              label="Username"
+              label="Mnemonic"
               fullWidth
               InputProps={{
                 readOnly: true,
