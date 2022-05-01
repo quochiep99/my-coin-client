@@ -22,7 +22,7 @@ import ImportWalletStep from "./ImportWalletStep";
 import Card from "@mui/material/Card";
 
 // MNEMONIC
-// import { ethers } from "ethers";
+import { ethers } from "ethers";
 import CreatePasswordStep from "./CreatePasswordStep";
 
 const steps = ["Import wallet", "Create password"];
@@ -104,6 +104,16 @@ const HomeImportWalletStepper = () => {
                           formik.touched.mnemonic &&
                           !formik.errors.mnemonic
                         ) {
+                          try {
+                            // check if the entered mnemonic is valid
+                            const walletFromMnemonic =
+                              ethers.Wallet.fromMnemonic(
+                                formik.values.mnemonic
+                              );
+                            console.log(walletFromMnemonic);
+                          } catch (err) {
+                            console.log(err);
+                          }
                           handleNext();
                         }
                       }}
