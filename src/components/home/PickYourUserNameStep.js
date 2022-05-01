@@ -33,6 +33,7 @@ const PickYourUserNameStep = ({ onClick }) => {
               name="username"
               label="Username"
               fullWidth
+              autoFocus
             />
           </Grid>
         </Grid>

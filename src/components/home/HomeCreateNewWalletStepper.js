@@ -14,6 +14,9 @@ import Container from "@mui/material/Container";
 // Formik
 import { Formik, Form } from "formik";
 
+// Yup
+import * as yup from "yup";
+
 // MY COMPONENTS
 import PickYourUserNameStep from "./PickYourUserNameStep";
 import BackupYourWalletStep from "./BackupYourWalletStep";
@@ -27,6 +30,15 @@ const steps = [
   "You saved it, right ?",
   "Create password",
 ];
+
+const HomeCreateNewWalletStepperSchema = yup.object().shape({
+  username: yup.string().required("Please enter your username"),
+  mnemonic: yup.string(),
+  firstWord: yup.string().required("Please enter the first word"),
+  lastWord: yup.string().required("Please enter the last word"),
+  password: yup.string().required("Please enter the password"),
+  verifyPassword: yup.string().required("Please verify your password"),
+});
 
 const HomeCreateNewWalletStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
@@ -73,20 +85,47 @@ const HomeCreateNewWalletStepper = () => {
               console.log(values);
               handleNext();
             }}
+            validationSchema={HomeCreateNewWalletStepperSchema}
+            validateOnBlur={false}
           >
             {(formik) => (
               <Form>
                 {activeStep === 0 && (
-                  <PickYourUserNameStep onClick={handleNext} />
+                  <PickYourUserNameStep
+                    onClick={() => {
+                      if (formik.touched.username && !formik.errors.username) {
+                        handleNext();
+                      }
+                    }}
+                  />
                 )}
                 {activeStep === 1 && (
                   <BackupYourWalletStep onClick={handleNext} formik={formik} />
                 )}
                 {activeStep === 2 && (
-                  <YouSavedItRightStep onClick={handleNext} />
+                  <YouSavedItRightStep
+                    onClick={() => {
+                      formik.setFieldTouched("lastWord");
+                      if (
+                        formik.touched.firstWord &&
+                        !formik.errors.firstWord &&
+                        formik.touched.lastWord &&
+                        !formik.errors.lastWord
+                      ) {
+                        handleNext();
+                      }
+                    }}
+                  />
                 )}
                 {activeStep === 3 && (
-                  <CreatePasswordStep onClick={handleNext} />
+                  <CreatePasswordStep
+                    onClick={() => {
+                      formik.setFieldTouched("lastWord");
+                      if (formik.touched.password && !formik.errors.password) {
+                        handleNext();
+                      }
+                    }}
+                  />
                 )}
               </Form>
             )}

@@ -41,6 +41,7 @@ const YouSavedItRightStep = ({ onClick }) => {
               name="firstWord"
               label="First word"
               fullWidth
+              autoFocus
             />
           </Grid>
           <Grid item>
