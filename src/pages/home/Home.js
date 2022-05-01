@@ -6,23 +6,49 @@ import Container from "@mui/material/Container";
 // MY COMPONENTS
 import HomeCoinbaseWalletCard from "../../components/home/HomeCoinbaseWalletCard";
 import HomeCreateNewWalletStepper from "../../components/home/HomeCreateNewWalletStepper";
+import HomeImportWalletStepper from "../../components/home/HomeImportWalletStepper";
 
 const Home = () => {
-  const [showCard, setShowCard] = useState(false);
-  const handleClick = () => {
-    setShowCard(false);
+  const [show, setShow] = useState({
+    homeCoinbaseWalletCard: true,
+    homeCreateNewWalletStepper: false,
+    homeImportWalletStepper: false,
+  });
+
+  const handleClickCreateNewWallet = () => {
+    setShow({
+      homeCoinbaseWalletCard: false,
+      homeCreateNewWalletStepper: true,
+      homeImportWalletStepper: false,
+    });
+  };
+
+  const handleClickImportExistingWallet = () => {
+    setShow({
+      homeCoinbaseWalletCard: false,
+      homeCreateNewWalletStepper: false,
+      homeImportWalletStepper: true,
+    });
   };
 
   return (
     <>
-      {showCard && (
+      {show.homeCoinbaseWalletCard && (
         <Container maxWidth="xs" sx={{ mt: "10vh", px: 0 }}>
-          <HomeCoinbaseWalletCard onClick={handleClick} />
+          <HomeCoinbaseWalletCard
+            onClickCreateNewWallet={handleClickCreateNewWallet}
+            onClickImportExistingWallet={handleClickImportExistingWallet}
+          />
         </Container>
       )}
-      {!showCard && (
+      {show.homeCreateNewWalletStepper && (
         <Container maxWidth="md" sx={{ mt: "10vh", px: 0 }}>
-          <HomeCreateNewWalletStepper onClick={handleClick} />
+          <HomeCreateNewWalletStepper />
+        </Container>
+      )}
+      {show.homeImportWalletStepper && (
+        <Container maxWidth="md" sx={{ mt: "10vh", px: 0 }}>
+          <HomeImportWalletStepper />
         </Container>
       )}
     </>
