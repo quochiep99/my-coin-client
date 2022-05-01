@@ -23,6 +23,7 @@ import BackupYourWalletStep from "./BackupYourWalletStep";
 import YouSavedItRightStep from "./YouSavedItRightStep";
 import CreatePasswordStep from "./CreatePasswordStep";
 import YourWalletIsReadyStep from "./YourWalletIsReadyStep";
+import Card from "@mui/material/Card";
 
 // MNEMONIC
 import { ethers } from "ethers";
@@ -114,44 +115,55 @@ const HomeCreateNewWalletStepper = () => {
           >
             {(formik) => (
               <Form>
-                {activeStep === 0 && (
-                  <PickYourUserNameStep
-                    onClick={() => {
-                      formik.setFieldTouched("username");
-                      if (formik.touched.username && !formik.errors.username) {
-                        handleNext();
-                      }
-                    }}
-                  />
-                )}
-                {activeStep === 1 && (
-                  <BackupYourWalletStep onClick={handleNext} formik={formik} />
-                )}
-                {activeStep === 2 && (
-                  <YouSavedItRightStep
-                    onClick={() => {
-                      formik.setFieldTouched("lastWord");
-                      if (
-                        formik.touched.firstWord &&
-                        !formik.errors.firstWord &&
-                        formik.touched.lastWord &&
-                        !formik.errors.lastWord
-                      ) {
-                        handleNext();
-                      }
-                    }}
-                  />
-                )}
-                {activeStep === 3 && (
-                  <CreatePasswordStep
-                    onClick={() => {
-                      formik.setFieldTouched("lastWord");
-                      if (formik.touched.password && !formik.errors.password) {
-                        handleNext();
-                      }
-                    }}
-                  />
-                )}
+                <Card raised sx={{ height: 500, py: 2, px: 2.5, mx: 2 }}>
+                  {activeStep === 0 && (
+                    <PickYourUserNameStep
+                      onClick={() => {
+                        formik.setFieldTouched("username");
+                        if (
+                          formik.touched.username &&
+                          !formik.errors.username
+                        ) {
+                          handleNext();
+                        }
+                      }}
+                    />
+                  )}
+                  {activeStep === 1 && (
+                    <BackupYourWalletStep
+                      onClick={handleNext}
+                      formik={formik}
+                    />
+                  )}
+                  {activeStep === 2 && (
+                    <YouSavedItRightStep
+                      onClick={() => {
+                        formik.setFieldTouched("lastWord");
+                        if (
+                          formik.touched.firstWord &&
+                          !formik.errors.firstWord &&
+                          formik.touched.lastWord &&
+                          !formik.errors.lastWord
+                        ) {
+                          handleNext();
+                        }
+                      }}
+                    />
+                  )}
+                  {activeStep === 3 && (
+                    <CreatePasswordStep
+                      onClick={() => {
+                        formik.setFieldTouched("lastWord");
+                        if (
+                          formik.touched.password &&
+                          !formik.errors.password
+                        ) {
+                          handleNext();
+                        }
+                      }}
+                    />
+                  )}
+                </Card>
               </Form>
             )}
           </Formik>
