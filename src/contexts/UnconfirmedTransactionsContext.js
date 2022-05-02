@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 const UnconfirmedTransactionsContext = React.createContext();
 
 const UnconfirmedTransactionsContextProvider = ({ children }) => {
-  const [transactions, setTransactions] = useState([]);
+  const [state, setState] = useState([]);
   useEffect(() => {
     (async () => {
       const response = await fetch(
@@ -12,13 +12,13 @@ const UnconfirmedTransactionsContextProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         console.log(data);
-        setTransactions(data);
+        setState(data.transactions);
       }
     })();
   }, []);
 
   return (
-    <UnconfirmedTransactionsContext.Provider value={transactions}>
+    <UnconfirmedTransactionsContext.Provider value={state}>
       {children}
     </UnconfirmedTransactionsContext.Provider>
   );
