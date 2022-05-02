@@ -8,14 +8,29 @@ import Home from "./pages/home/Home";
 import MyWallet from "./pages/wallets/my-wallet/MyWallet";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import MyWalletBalance from "./components/wallets/my-wallet/MyWalletBalance/MyWalletBalance";
+import MyWalletMineReward from "./components/wallets/my-wallet/MyWalletMineReward/MyWalletMineReward";
+import MyWalletSendCoin from "./components/wallets/my-wallet/MyWalletSendCoin/MyWalletSendCoin";
+import MyWalletReceiveCoin from "./components/wallets/my-wallet/MyWalletReceiveCoin/MyWalletReceiveCoin";
 
 const App = () => {
   return (
     <BrowserRouter>
       <CssBaseline />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/wallets/my-wallet" element={<MyWallet />} />
+        <Route path="" element={<Home />} />
+        <Route path="wallets" element={<MyWallet />}>
+          <Route path="my-wallet/balance" element={<MyWalletBalance />} />
+          <Route
+            path="my-wallet/mine-reward"
+            element={<MyWalletMineReward />}
+          />
+          <Route path="my-wallet/send-coin" element={<MyWalletSendCoin />} />
+          <Route
+            path="my-wallet/receive-coin"
+            element={<MyWalletReceiveCoin />}
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
