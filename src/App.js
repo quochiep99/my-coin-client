@@ -5,6 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 // MY COMPONENTS
 import Home from "./pages/home/Home";
+import MyWallet from "./pages/wallets/my-wallet/MyWallet";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -14,7 +15,7 @@ const App = () => {
       <CssBaseline />
       <Routes>
         <Route path="/" element={<Home />} />
-        {/* <Route path="/wallets/new" element={} /> */}
+        <Route path="/wallets/my-wallet" element={<MyWallet />} />
       </Routes>
     </BrowserRouter>
   );
