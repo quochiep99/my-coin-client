@@ -13,10 +13,34 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
+import { Link as RouterLink } from "react-router-dom";
+
 // MUI ICONS
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
+import GetAppOutlinedIcon from "@mui/icons-material/GetAppOutlined";
+
+function ListItemLink(props) {
+  const { icon, primary, to } = props;
+
+  const renderLink = React.useMemo(
+    () =>
+      React.forwardRef(function Link(itemProps, ref) {
+        return <RouterLink to={to} ref={ref} {...itemProps} role={undefined} />;
+      }),
+    [to]
+  );
+
+  return (
+    <li>
+      <ListItem button component={renderLink}>
+        {icon ? <ListItemIcon>{icon}</ListItemIcon> : null}
+        <ListItemText primary={primary} />
+      </ListItem>
+    </li>
+  );
+}
 
 const drawerWidth = 240;
 
@@ -49,24 +73,26 @@ const MyWalletDrawer = () => {
         <Toolbar />
         <Divider />
         <List>
-          <ListItem button>
-            <ListItemIcon>
-              <PaidOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Balance" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <EmojiEventsOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Mine Reward" />
-          </ListItem>
-          <ListItem button>
-            <ListItemIcon>
-              <IosShareOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Send coin" />
-          </ListItem>
+          <ListItemLink
+            to="/wallets/my-wallet/balance"
+            primary="Balance"
+            icon={<PaidOutlinedIcon />}
+          />
+          <ListItemLink
+            to="/wallets/my-wallet/balance"
+            primary="Mine Reward"
+            icon={<EmojiEventsOutlinedIcon />}
+          />
+          <ListItemLink
+            to="/wallets/my-wallet/balance"
+            primary="Send coin"
+            icon={<IosShareOutlinedIcon />}
+          />
+          <ListItemLink
+            to="/wallets/my-wallet/balance"
+            primary="Receive coin"
+            icon={<GetAppOutlinedIcon />}
+          />
         </List>
       </Drawer>
       <Box
