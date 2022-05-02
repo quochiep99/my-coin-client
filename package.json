@@ -16,6 +16,7 @@
     "formik": "^2.2.9",
     "formik-mui": "^4.0.0-alpha.3",
     "formik-mui-lab": "^1.0.0-alpha.3",
+    "js-sha256": "^0.9.0",
     "notistack": "^2.0.4",
     "react": "^18.1.0",
     "react-copy-to-clipboard": "^5.1.0",
