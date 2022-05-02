@@ -20,6 +20,7 @@ import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
 import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import GetAppOutlinedIcon from "@mui/icons-material/GetAppOutlined";
+import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined";
 
 const ListItemLink = (props) => {
   const { icon, primary, to } = props;
@@ -92,6 +93,11 @@ const MyWalletDrawer = () => {
             to="/wallets/my-wallet/receive-coin"
             primary="Receive coin"
             icon={<GetAppOutlinedIcon />}
+          />
+          <ListItemLink
+            to="/wallets/my-wallet/transactions"
+            primary="Transactions"
+            icon={<FeaturedPlayListOutlinedIcon />}
           />
         </List>
       </Drawer>

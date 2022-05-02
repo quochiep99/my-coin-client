@@ -12,6 +12,7 @@ import MyWalletBalance from "./components/wallets/my-wallet/MyWalletBalance/MyWa
 import MyWalletMineReward from "./components/wallets/my-wallet/MyWalletMineReward/MyWalletMineReward";
 import MyWalletSendCoin from "./components/wallets/my-wallet/MyWalletSendCoin/MyWalletSendCoin";
 import MyWalletReceiveCoin from "./components/wallets/my-wallet/MyWalletReceiveCoin/MyWalletReceiveCoin";
+import MyWalletTransactions from "./components/wallets/my-wallet/MyWalletTransactions.js/MyWalletTransactions.js";
 
 const App = () => {
   return (
@@ -29,6 +30,10 @@ const App = () => {
           <Route
             path="my-wallet/receive-coin"
             element={<MyWalletReceiveCoin />}
+          />
+          <Route
+            path="my-wallet/transactions"
+            element={<MyWalletTransactions />}
           />
         </Route>
       </Routes>
