@@ -13,12 +13,13 @@ import MyWalletMineReward from "./components/wallets/my-wallet/MyWalletMineRewar
 import MyWalletSendCoin from "./components/wallets/my-wallet/MyWalletSendCoin/MyWalletSendCoin";
 import MyWalletReceiveCoin from "./components/wallets/my-wallet/MyWalletReceiveCoin/MyWalletReceiveCoin";
 import MyWalletTransactions from "./components/wallets/my-wallet/MyWalletTransactions.js/MyWalletTransactions.js";
+
+// HOOKS
 import useWallet from "./hooks/useWallet";
 
 const App = () => {
-  const { address } = useWallet();
-  console.log(address);
-  return (
+  const { isInitialized, address } = useWallet();
+  return isInitialized ? (
     <BrowserRouter>
       <CssBaseline />
       <Routes>
@@ -40,6 +41,8 @@ const App = () => {
         </Route>
       </Routes>
     </BrowserRouter>
+  ) : (
+    "Loading"
   );
 };
 

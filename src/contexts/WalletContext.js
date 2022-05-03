@@ -4,6 +4,7 @@ const WalletContext = React.createContext({
   address: "",
   username: "",
   utxos: [], // unspent transaction outputs
+  isInitialized: false,
   setAddress: (address) => {},
   setUsername: (username) => {},
   setUTXOS: (utxos) => {},
@@ -18,7 +19,7 @@ const WalletContextProvider = ({ children }) => {
 
   const setAddress = (address) => {
     setState((prevState) => {
-      const newState = { ...prevState, address };
+      const newState = { ...prevState, address, isInitialized: true };
       localStorage.setItem("wallet", JSON.stringify(newState));
       return newState;
     });
@@ -28,10 +29,12 @@ const WalletContextProvider = ({ children }) => {
     const localStorageWallet = localStorage.getItem("wallet") || "";
     try {
       const parsedLocalStorageWallet = JSON.parse(localStorageWallet);
-      setState(parsedLocalStorageWallet);
+      setState({ ...parsedLocalStorageWallet, isInitialized: true });
     } catch (err) {
       localStorage.removeItem("wallet");
-      console.log(err);
+      setState((prevState) => {
+        return { ...prevState, isInitialized: true };
+      });
     }
   }, []);
 
