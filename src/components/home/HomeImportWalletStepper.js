@@ -38,7 +38,7 @@ const steps = ["Import wallet", "Create password"];
 
 const HomeImportWalletStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const { address, setAddress } = useWallet();
+  const { setAddress } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
@@ -86,13 +86,13 @@ const HomeImportWalletStepper = () => {
                 ) {
                   throw new Error("Invalid inputs");
                 }
-                // check if the entered mnemonic is valid
-                const walletFromMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
-                // encrypt the wallet using the user's password
-                const encryptedWallet = await walletFromMnemonic.encrypt(
-                  password
-                );
-                console.log(encryptedWallet);
+                // // check if the entered mnemonic is valid
+                // const walletFromMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
+                // // encrypt the wallet using the user's password
+                // const encryptedWallet = await walletFromMnemonic.encrypt(
+                //   password
+                // );
+                // setAddress(encryptedWallet.address);
                 handleNext();
               } catch (err) {
                 enqueueSnackbar(err.message, {
@@ -101,15 +101,9 @@ const HomeImportWalletStepper = () => {
                 console.log(err);
               }
             }}
-            // validationSchema={HomeImportWalletStepperSchema}
             enableReinitialize
             validateOnChange={false}
             validateOnBlur={false}
-            initialTouched={{
-              // mnemonic: true,
-              password: true,
-              verifyPassword: true,
-            }}
           >
             {(formik) => (
               <Form>

@@ -4,7 +4,7 @@ const WalletContext = React.createContext({
   address: "",
   username: "",
   utxos: [], // unspent transaction outputs
-  setAddress: (publicKey) => {},
+  setAddress: (address) => {},
   setUsername: (username) => {},
   setUTXOS: (utxos) => {},
 });
