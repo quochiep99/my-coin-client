@@ -14,27 +14,32 @@ import Container from "@mui/material/Container";
 // Formik
 import { Formik, Form } from "formik";
 
-// Yup
-import * as yup from "yup";
-
 // MY COMPONENTS
 import ImportWalletStep from "./ImportWalletStep";
+import HomeImportCreatePasswordStep from "./HomeImportCreatePasswordStep";
+import YourWalletIsReadyStep from "./YourWalletIsReadyStep";
+
 import Card from "@mui/material/Card";
 
 // MNEMONIC
 import { ethers } from "ethers";
-import CreatePasswordStep from "./CreatePasswordStep";
+
+// HOOKS
+import useWallet from "../../hooks/useWallet";
+import { useSnackbar } from "notistack";
 
 const steps = ["Import wallet", "Create password"];
 
-const HomeImportWalletStepperSchema = yup.object().shape({
-  mnemonic: yup.string(),
-  password: yup.string().required("Please enter the password"),
-  verifyPassword: yup.string().required("Please verify your password"),
-});
+// const HomeImportWalletStepperSchema = yup.object().shape({
+//   mnemonic: yup.string(),
+//   password: yup.string().required("Please enter the password"),
+//   verifyPassword: yup.string().required("Please verify your password"),
+// });
 
 const HomeImportWalletStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const { address, setAddress } = useWallet();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -60,7 +65,7 @@ const HomeImportWalletStepper = () => {
       </Stepper>
       {activeStep === steps.length ? (
         <Container maxWidth="xs" sx={{ mt: 3 }}>
-          {/* <YourWalletIsReadyStep onClick={handleNext} /> */}
+          <YourWalletIsReadyStep onClick={handleNext} />
         </Container>
       ) : (
         <Container maxWidth="xs" sx={{ mt: 5 }}>
@@ -72,66 +77,50 @@ const HomeImportWalletStepper = () => {
             }}
             onSubmit={async (values) => {
               try {
-                console.log(values);
-                // const response = await fetch("http://localhost:5000/wallets", {
-                //   method: "POST",
-                //   headers: {
-                //     "Content-Type": "application/json",
-                //   },
-                //   body: JSON.stringify(values),
-                // });
-
-                // // request success
-                // if (response.ok) {
-                //   handleNext();
-                // }
+                const { mnemonic, password, verifyPassword } = values;
+                if (
+                  !mnemonic ||
+                  !password ||
+                  !verifyPassword ||
+                  password !== verifyPassword
+                ) {
+                  throw new Error("Invalid inputs");
+                }
+                // check if the entered mnemonic is valid
+                const walletFromMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
+                // encrypt the wallet using the user's password
+                const encryptedWallet = await walletFromMnemonic.encrypt(
+                  password
+                );
+                console.log(encryptedWallet);
+                handleNext();
               } catch (err) {
+                enqueueSnackbar(err.message, {
+                  variant: "error",
+                });
                 console.log(err);
               }
             }}
-            validationSchema={HomeImportWalletStepperSchema}
-            // validateOnBlur={false}
+            // validationSchema={HomeImportWalletStepperSchema}
             enableReinitialize
+            validateOnChange={false}
+            validateOnBlur={false}
+            initialTouched={{
+              // mnemonic: true,
+              password: true,
+              verifyPassword: true,
+            }}
           >
             {(formik) => (
               <Form>
                 <Card raised sx={{ height: 500, py: 2, px: 2.5, mx: 2 }}>
                   {activeStep === 0 && (
-                    <ImportWalletStep
-                      onClick={() => {
-                        formik.setFieldTouched("mnemonic");
-                        if (
-                          formik.touched.mnemonic &&
-                          !formik.errors.mnemonic
-                        ) {
-                          try {
-                            // check if the entered mnemonic is valid
-                            const walletFromMnemonic =
-                              ethers.Wallet.fromMnemonic(
-                                formik.values.mnemonic
-                              );
-                            console.log(walletFromMnemonic);
-                          } catch (err) {
-                            console.log(err);
-                          }
-                          handleNext();
-                        }
-                      }}
-                    />
+                    <ImportWalletStep formik={formik} handleNext={handleNext} />
                   )}
                   {activeStep === 1 && (
-                    <CreatePasswordStep
-                      onClick={() => {
-                        formik.setFieldTouched("password");
-                        if (
-                          formik.touched.password &&
-                          !formik.errors.password &&
-                          formik.touched.verifyPassword &&
-                          !formik.errors.verifyPassword
-                        ) {
-                          handleNext();
-                        }
-                      }}
+                    <HomeImportCreatePasswordStep
+                      formik={formik}
+                      handleNext={handleNext}
                     />
                   )}
                 </Card>
@@ -148,6 +137,7 @@ const HomeImportWalletStepper = () => {
             >
               Back
             </Button>
+
             <Box sx={{ flex: "1 1 auto" }} />
           </Box>
         </Container>

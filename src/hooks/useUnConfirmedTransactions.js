@@ -4,7 +4,7 @@ import { useContext } from "react";
 // CONTEXTS
 import { UnconfirmedTransactionsContext } from "../contexts/UnconfirmedTransactionsContext";
 
-const useUnConfirmedTransactions = () =>
+const useUnconfirmedTransactions = () =>
   useContext(UnconfirmedTransactionsContext);
 
-export default useUnConfirmedTransactions;
+export default useUnconfirmedTransactions;

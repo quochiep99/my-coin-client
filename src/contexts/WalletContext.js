@@ -1,27 +1,27 @@
 import React, { useState } from "react";
 
 const WalletContext = React.createContext({
-  publicKey: "",
+  address: "",
   username: "",
-  balance: "",
-  setPublicKey: (publicKey) => {},
+  utxos: [], // unspent transaction outputs
+  setAddress: (publicKey) => {},
   setUsername: (username) => {},
-  setBalance: (balance) => {},
+  setUTXOS: (utxos) => {},
 });
 
 const WalletContextProvider = ({ children }) => {
   const [state, setState] = useState({
-    publicKey: "",
+    address: "",
     username: "",
-    balance: "",
+    utxos: [], // unspent transaction outputs
   });
 
-  const setPublicKey = (publicKey) => {
-    setState((prevState) => ({ ...prevState, publicKey }));
+  const setAddress = (address) => {
+    setState((prevState) => ({ ...prevState, address }));
   };
 
   return (
-    <WalletContext.Provider value={{ ...state, setPublicKey }}>
+    <WalletContext.Provider value={{ ...state }}>
       {children}
     </WalletContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // MUI COMPONENTS
 import Button from "@mui/material/Button";
@@ -11,7 +11,33 @@ import { Field } from "formik";
 // Formik Mui
 import { TextField } from "formik-mui";
 
-const ImportWalletStep = ({ onClick }) => {
+import { ethers } from "ethers";
+
+const validateMnemonic = (value) => {
+  let error;
+  if (!value) {
+    error = "Mnemonic required";
+  } else {
+    try {
+      ethers.Wallet.fromMnemonic(value);
+    } catch (err) {
+      error = "Mnemonic is not valid";
+    }
+  }
+  return error;
+};
+
+const ImportWalletStep = ({ formik, handleNext }) => {
+  const [clickSubmitButton, setClickSubmitButton] = useState(false);
+  useEffect(() => {
+    if (
+      clickSubmitButton &&
+      formik.touched.mnemonic &&
+      !formik.errors.mnemonic
+    ) {
+      handleNext();
+    }
+  }, [formik, handleNext, clickSubmitButton]);
   return (
     <Grid container direction="column" sx={{ height: "100%" }}>
       <Grid item xs={1}>
@@ -34,6 +60,7 @@ const ImportWalletStep = ({ onClick }) => {
             fullWidth
             autoFocus
             placeholder="12 word seed phrase"
+            validate={validateMnemonic}
           />
         </Grid>
       </Grid>
@@ -43,7 +70,10 @@ const ImportWalletStep = ({ onClick }) => {
             variant="contained"
             color="primary"
             fullWidth
-            onClick={onClick}
+            onClick={() => {
+              setClickSubmitButton(true);
+              formik.validateField("mnemonic");
+            }}
             sx={{ textTransform: "none" }}
           >
             Submit
