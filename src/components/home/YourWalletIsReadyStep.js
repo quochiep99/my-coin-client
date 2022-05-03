@@ -7,6 +7,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
+import { Link as RouterLink } from "react-router-dom";
+
 const YourWalletIsReadyStep = ({ formik }) => {
   return (
     <Box sx={{ height: 400 }}>
@@ -19,7 +21,12 @@ const YourWalletIsReadyStep = ({ formik }) => {
             Be sure to pin the extension in your browser to access it easily
           </Typography>
           <Box sx={{ textAlign: "center", mt: 3 }}>
-            <Button sx={{ textTransform: "none" }} variant="contained">
+            <Button
+              sx={{ textTransform: "none" }}
+              variant="contained"
+              component={RouterLink}
+              to="wallets/my-wallet/balance"
+            >
               Access wallet now
             </Button>
           </Box>

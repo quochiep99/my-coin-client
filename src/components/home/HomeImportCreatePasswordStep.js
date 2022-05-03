@@ -61,6 +61,7 @@ const HomeImportCreatePasswordStep = ({ formik, handleNext }) => {
             fullWidth
             type="password"
             validate={validatePassword}
+            autoFocus
           />
         </Grid>
         <Grid item>
@@ -84,6 +85,7 @@ const HomeImportCreatePasswordStep = ({ formik, handleNext }) => {
             loadingIndicator="Encrypting..."
             variant="contained"
             fullWidth
+            sx={{ textTransform: "none" }}
           >
             Submit
           </LoadingButton>

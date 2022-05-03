@@ -86,13 +86,13 @@ const HomeImportWalletStepper = () => {
                 ) {
                   throw new Error("Invalid inputs");
                 }
-                // // check if the entered mnemonic is valid
-                // const walletFromMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
-                // // encrypt the wallet using the user's password
-                // const encryptedWallet = await walletFromMnemonic.encrypt(
-                //   password
-                // );
-                // setAddress(encryptedWallet.address);
+                // check if the entered mnemonic is valid
+                const walletFromMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
+                // encrypt the wallet using the user's password
+                const encryptedWalletJSON = await walletFromMnemonic.encrypt(
+                  password
+                );
+                setAddress(JSON.parse(encryptedWalletJSON).address);
                 handleNext();
               } catch (err) {
                 enqueueSnackbar(err.message, {
