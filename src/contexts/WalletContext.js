@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const WalletContext = React.createContext({
   address: "",
@@ -10,20 +10,11 @@ const WalletContext = React.createContext({
 });
 
 const WalletContextProvider = ({ children }) => {
-  let localStorageWallet = localStorage.getItem("wallet");
-  let parsedLocalStorageWallet;
-  try {
-    parsedLocalStorageWallet = JSON.parse(localStorageWallet);
-  } catch (err) {
-    localStorage.removeItem("wallet");
-    parsedLocalStorageWallet = {
-      address: "",
-      username: "",
-      utxos: [], // unspent transaction outputs
-    };
-  }
-
-  const [state, setState] = useState(parsedLocalStorageWallet);
+  const [state, setState] = useState({
+    address: "",
+    username: "",
+    utxos: [], // unspent transaction outputs
+  });
 
   const setAddress = (address) => {
     setState((prevState) => {
@@ -32,6 +23,17 @@ const WalletContextProvider = ({ children }) => {
       return newState;
     });
   };
+
+  useEffect(() => {
+    const localStorageWallet = localStorage.getItem("wallet") || "";
+    try {
+      const parsedLocalStorageWallet = JSON.parse(localStorageWallet);
+      setState(parsedLocalStorageWallet);
+    } catch (err) {
+      localStorage.removeItem("wallet");
+      console.log(err);
+    }
+  }, []);
 
   return (
     <WalletContext.Provider value={{ ...state, setAddress }}>
