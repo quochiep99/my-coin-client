@@ -11,7 +11,6 @@ const UnconfirmedTransactionsContextProvider = ({ children }) => {
       );
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
         setState(data.transactions);
       }
     })();

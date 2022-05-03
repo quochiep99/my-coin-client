@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 // MUI COMPONENTS
 import Card from "@mui/material/Card";
@@ -12,26 +12,32 @@ import createBlock from "../../../../utils/createBlock";
 
 // HOOKS
 import { useSnackbar } from "notistack";
+import useWallet from "../../../../hooks/useWallet";
+import useBlocks from "../../../../hooks/useBlocks";
 
 const MyWalletMineReward = () => {
-  const [blocks, setBlocks] = useState([]);
+  const { blocks, addBlock } = useBlocks();
+  const { address } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleClickMineNewBlock = async () => {
     const latestBlock = blocks[blocks.length - 1];
-    const transaction = {
-      from: "REWARD",
-      to: "0x04b9e72dfd423bcf95b3801ac93f4392be5ff22143f9980eb78b3a860c4843bfd04829ae61cdba4b3b1978ac5fc64f5cc2f4350e35a108a9c9a92a81200a60cd64",
-      amount: 100,
-      status: "Unspent",
-    };
-    const data = JSON.stringify(transaction);
+    const transactions = [
+      {
+        from: "REWARD",
+        to: address,
+        amount: 100,
+        status: "unspent",
+      },
+    ];
+    const data = JSON.stringify(transactions);
     const newBlock = createBlock(latestBlock.index + 1, latestBlock.hash, data);
-    const newBlocks = [...blocks, newBlock];
+    // const newBlocks = [...blocks, newBlock];
     // append new block to the blocks (blockchain)
     // server side
     try {
       (async () => {
+        // Broadcast new block to all the connected nodes
         const response = await fetch("http://localhost:5000/api/blocks", {
           method: "POST",
           headers: {
@@ -53,22 +59,9 @@ const MyWalletMineReward = () => {
     }
 
     // client side
-    setBlocks(newBlocks);
+    addBlock(newBlock);
   };
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/blocks");
-        if (response.ok) {
-          const data = await response.json();
-          const { blocks } = data;
-          console.log(blocks);
-          setBlocks(blocks);
-        }
-      } catch (err) {}
-    })();
-  }, []);
   return (
     <Container maxWidth="xs">
       <Card raised sx={{ p: 2, mt: "25vh" }}>

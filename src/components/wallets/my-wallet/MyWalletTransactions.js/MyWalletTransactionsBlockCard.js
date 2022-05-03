@@ -7,6 +7,9 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
+// MY COMPONENTS
+import BlockCardTransactions from "./BlockCardTransactions";
+
 const MyWalletTransactionsBlockCard = ({
   index,
   previousHash,
@@ -66,17 +69,20 @@ const MyWalletTransactionsBlockCard = ({
           <Grid item alignSelf="center" xs={2}>
             <Typography variant="subtitle2">Data</Typography>
           </Grid>
-          <Grid item sx={{ flexGrow: 1 }}>
-            <TextField
-              variant="outlined"
-              size="small"
-              sx={{ ml: 1 }}
-              fullWidth
-              InputProps={{
-                readOnly: true,
-              }}
-              value={data}
-            />
+          <Grid item sx={{ flexGrow: 1, ml: 1 }}>
+            {typeof data === "string" ? (
+              <TextField
+                variant="outlined"
+                size="small"
+                fullWidth
+                InputProps={{
+                  readOnly: true,
+                }}
+                value={data}
+              />
+            ) : (
+              <BlockCardTransactions transactions={data} />
+            )}
           </Grid>
         </Grid>
 

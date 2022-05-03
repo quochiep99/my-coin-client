@@ -4,7 +4,7 @@ const createBlock = (index, previousHash, data) => {
   let timestamp;
   let nonce;
   let hash;
-  let genesisBlock;
+  let newBlock;
 
   let previousTimestamp;
   while (true) {
@@ -17,7 +17,7 @@ const createBlock = (index, previousHash, data) => {
         hash = sha256("" + index + previousHash + timestamp + data + nonce);
         // difficulty : 3
         if (hash.substr(0, 3) === "000") {
-          genesisBlock = {
+          newBlock = {
             index,
             previousHash,
             timestamp,
@@ -25,7 +25,7 @@ const createBlock = (index, previousHash, data) => {
             nonce,
             hash,
           };
-          return genesisBlock;
+          return newBlock;
         }
       } else {
         // move onto new second, start nonce from 0 again
