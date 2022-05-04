@@ -26,6 +26,7 @@ const BlockCardTransactions = ({ transactions }) => {
             <TableCell align="center">Amount</TableCell>
             <TableCell align="center">Status</TableCell>
             <TableCell align="center">Timestamp</TableCell>
+            <TableCell align="center">Hash</TableCell>
             <TableCell align="left">Signature</TableCell>
           </TableRow>
         </TableHead>
@@ -51,6 +52,7 @@ const BlockCardTransactions = ({ transactions }) => {
               <TableCell align="center">
                 {new Date(transaction.data.timestamp * 1000).toUTCString()}
               </TableCell>
+              <TableCell align="center">{transaction.data.hash}</TableCell>
               <TableCell align="left">{transaction.signature}</TableCell>
             </TableRow>
           ))}

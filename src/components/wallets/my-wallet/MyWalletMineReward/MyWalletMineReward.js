@@ -52,6 +52,10 @@ const MyWalletMineReward = () => {
         status: "unspent",
         timestamp: Math.floor(Date.now() / 1000),
       };
+      // hash the transactionData, not including status since this field is changeable from 'unspent' to 'spent'
+      transactionData.hash = ethers.utils.id(
+        JSON.stringify({ transactionData, status: undefined })
+      );
 
       const transactionSignature = signTransaction(
         transactionData,
