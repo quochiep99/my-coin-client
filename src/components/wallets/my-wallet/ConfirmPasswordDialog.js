@@ -48,7 +48,6 @@ const ConfirmPasswordDialog = ({
             let errors = {};
             if (isInitialized) {
               const { enteredPassword } = values;
-              console.log(enteredPassword);
               if (!enteredPassword) {
                 errors = {
                   enteredPassword: "Please enter your password",

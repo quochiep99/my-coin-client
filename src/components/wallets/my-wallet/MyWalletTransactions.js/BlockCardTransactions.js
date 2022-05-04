@@ -25,6 +25,7 @@ const BlockCardTransactions = ({ transactions }) => {
             <TableCell align="center">To</TableCell>
             <TableCell align="center">Amount</TableCell>
             <TableCell align="center">Status</TableCell>
+            <TableCell align="center">Timestamp</TableCell>
             <TableCell align="left">Signature</TableCell>
           </TableRow>
         </TableHead>
@@ -46,6 +47,9 @@ const BlockCardTransactions = ({ transactions }) => {
                     transaction.data.status === "unspent" ? "success" : "error"
                   }
                 />
+              </TableCell>
+              <TableCell align="center">
+                {new Date(transaction.data.timestamp * 1000).toUTCString()}
               </TableCell>
               <TableCell align="left">{transaction.signature}</TableCell>
             </TableRow>

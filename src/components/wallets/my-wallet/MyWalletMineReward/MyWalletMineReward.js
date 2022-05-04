@@ -50,6 +50,7 @@ const MyWalletMineReward = () => {
         to: decryptedWallet.address,
         amount: 100,
         status: "unspent",
+        timestamp: Math.floor(Date.now() / 1000),
       };
 
       const transactionSignature = signTransaction(

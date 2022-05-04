@@ -11,6 +11,8 @@ import MyWalletTransactionsBlockCard from "./MyWalletTransactionsBlockCard";
 // HOOKS
 import useBlocks from "../../../../hooks/useBlocks";
 
+import produce from "immer";
+
 // const DUMMY_BLOCKCHAIN = [
 //   {
 //     _id: "626f836fa213c89d376c1b89",
@@ -63,13 +65,17 @@ const MyWalletTransactions = () => {
           sx={{ width: "100%" }}
         >
           {blocks.map((el) => {
-            try {
-              el.data = JSON.parse(el.data);
-            } catch (err) {}
+            const newEl = produce(el, (draft) => {
+              try {
+                draft.data = JSON.parse(draft.data);
+              } catch (err) {
+                // console.log(err);
+              }
+            });
 
             return (
-              <Grid item key={el._id} sx={{ width: "100%" }}>
-                <MyWalletTransactionsBlockCard {...el} />
+              <Grid item key={newEl.hash} sx={{ width: "100%" }}>
+                <MyWalletTransactionsBlockCard {...newEl} />
               </Grid>
             );
           })}

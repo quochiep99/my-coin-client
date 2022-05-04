@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import produce from "immer";
+
 const BlocksContext = React.createContext({
   blocks: [],
   addBlock: (block) => {},
@@ -10,13 +12,13 @@ const BlocksContextProvider = ({ children }) => {
 
   const addBlock = (block) => {
     setState((prevState) => {
-      return {
-        ...prevState,
-        block,
-      };
+      const newState = produce(prevState, (draft) => {
+        draft.blocks.push(block);
+      });
+      return newState;
     });
   };
-  
+
   useEffect(() => {
     (async () => {
       const response = await fetch("http://localhost:5000/api/blocks");
