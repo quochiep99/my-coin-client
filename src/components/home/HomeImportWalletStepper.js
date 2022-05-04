@@ -30,15 +30,9 @@ import { useSnackbar } from "notistack";
 
 const steps = ["Import wallet", "Create password"];
 
-// const HomeImportWalletStepperSchema = yup.object().shape({
-//   mnemonic: yup.string(),
-//   password: yup.string().required("Please enter the password"),
-//   verifyPassword: yup.string().required("Please verify your password"),
-// });
-
 const HomeImportWalletStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const { setAddress } = useWallet();
+  const { setEncryptedWalletJSON, setPassword } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
@@ -92,7 +86,8 @@ const HomeImportWalletStepper = () => {
                 const encryptedWalletJSON = await walletFromMnemonic.encrypt(
                   password
                 );
-                setAddress(JSON.parse(encryptedWalletJSON).address);
+                setEncryptedWalletJSON(encryptedWalletJSON);
+                setPassword(password);
                 handleNext();
               } catch (err) {
                 enqueueSnackbar(err.message, {

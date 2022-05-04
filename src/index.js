@@ -14,6 +14,7 @@ import "@fontsource/roboto/700.css";
 import { UnconfirmedTransactionsContextProvider } from "./contexts/UnconfirmedTransactionsContext";
 import { BlocksContextProvider } from "./contexts/BlocksContext";
 import { WalletContextProvider } from "./contexts/WalletContext";
+import { EnteredPasswordContextProvider } from "./contexts/EnteredPasswordContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -22,7 +23,9 @@ root.render(
       <UnconfirmedTransactionsContextProvider>
         <BlocksContextProvider>
           <WalletContextProvider>
-            <App />
+            <EnteredPasswordContextProvider>
+              <App />
+            </EnteredPasswordContextProvider>
           </WalletContextProvider>
         </BlocksContextProvider>
       </UnconfirmedTransactionsContextProvider>

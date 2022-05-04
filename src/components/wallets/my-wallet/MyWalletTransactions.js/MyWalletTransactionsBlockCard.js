@@ -19,8 +19,14 @@ const MyWalletTransactionsBlockCard = ({
   hash,
 }) => {
   return (
-    <Card raised sx={{ px: 4, py: 5 }}>
-      <Grid item container direction="column" spacing={2}>
+    <Card raised sx={{ px: 4, py: 5, width: "100%" }}>
+      <Grid
+        item
+        container
+        direction="column"
+        spacing={2}
+        sx={{ width: "100%" }}
+      >
         <Grid item>
           <Typography variant="h5" fontWeight="bold">
             Block #{index}
@@ -69,7 +75,7 @@ const MyWalletTransactionsBlockCard = ({
           <Grid item alignSelf="center" xs={2}>
             <Typography variant="subtitle2">Data</Typography>
           </Grid>
-          <Grid item sx={{ flexGrow: 1, ml: 1 }}>
+          <Grid item sx={{ ml: 1 }} xs={12}>
             {typeof data === "string" ? (
               <TextField
                 variant="outlined"

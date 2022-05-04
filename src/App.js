@@ -18,7 +18,7 @@ import MyWalletTransactions from "./components/wallets/my-wallet/MyWalletTransac
 import useWallet from "./hooks/useWallet";
 
 const App = () => {
-  const { isInitialized, address } = useWallet();
+  const { isInitialized, encryptedWalletJSON } = useWallet();
   return isInitialized ? (
     <BrowserRouter>
       <CssBaseline />
@@ -26,12 +26,16 @@ const App = () => {
         <Route
           path=""
           element={
-            !address ? <Home /> : <Navigate to="wallets/my-wallet/balance" />
+            !encryptedWalletJSON ? (
+              <Home />
+            ) : (
+              <Navigate to="wallets/my-wallet/balance" />
+            )
           }
         />
         <Route
           path="wallets/my-wallet"
-          element={address ? <MyWallet /> : <Navigate to="/" />}
+          element={encryptedWalletJSON ? <MyWallet /> : <Navigate to="/" />}
         >
           <Route path="balance" element={<MyWalletBalance />} />
           <Route path="mine-reward" element={<MyWalletMineReward />} />

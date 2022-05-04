@@ -12,7 +12,12 @@ import Chip from "@mui/material/Chip";
 
 const BlockCardTransactions = ({ transactions }) => {
   return (
-    <TableContainer component={Paper} sx={{ background: "rgb(231, 235, 240)" }}>
+    <TableContainer
+      component={Paper}
+      sx={{
+        background: "rgb(231, 235, 240)",
+      }}
+    >
       <Table>
         <TableHead>
           <TableRow>
@@ -20,6 +25,7 @@ const BlockCardTransactions = ({ transactions }) => {
             <TableCell align="center">To</TableCell>
             <TableCell align="center">Amount</TableCell>
             <TableCell align="center">Status</TableCell>
+            <TableCell align="left">Signature</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -29,13 +35,19 @@ const BlockCardTransactions = ({ transactions }) => {
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {transaction.from}
+                {transaction.data.from}
               </TableCell>
-              <TableCell align="center">{transaction.to}</TableCell>
-              <TableCell align="center">{transaction.amount}</TableCell>
+              <TableCell align="center">{transaction.data.to}</TableCell>
+              <TableCell align="center">{transaction.data.amount}</TableCell>
               <TableCell align="center">
-                <Chip label={transaction.status} color="success" />
+                <Chip
+                  label={transaction.data.status}
+                  color={
+                    transaction.data.status === "unspent" ? "success" : "error"
+                  }
+                />
               </TableCell>
+              <TableCell align="left">{transaction.signature}</TableCell>
             </TableRow>
           ))}
         </TableBody>

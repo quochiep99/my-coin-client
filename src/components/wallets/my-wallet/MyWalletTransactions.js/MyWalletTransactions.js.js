@@ -44,20 +44,31 @@ const MyWalletTransactions = () => {
   const { blocks } = useBlocks();
   return (
     <Container maxWidth="md">
-      <Grid container direction="column" sx={{ width: "100%" }} spacing={4}>
+      <Grid
+        container
+        direction="column"
+        sx={{ width: "100%", m: 0 }}
+        spacing={4}
+      >
         <Grid item>
           <Typography variant="h6" sx={{ textAlign: "center" }}>
             Blockchain Transactions
           </Typography>
         </Grid>
-        <Grid item container direction="column" spacing={4}>
+        <Grid
+          item
+          container
+          direction="column"
+          spacing={4}
+          sx={{ width: "100%" }}
+        >
           {blocks.map((el) => {
             try {
               el.data = JSON.parse(el.data);
             } catch (err) {}
 
             return (
-              <Grid item key={el._id}>
+              <Grid item key={el._id} sx={{ width: "100%" }}>
                 <MyWalletTransactionsBlockCard {...el} />
               </Grid>
             );
