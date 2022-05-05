@@ -28,6 +28,12 @@ import Card from "@mui/material/Card";
 // MNEMONIC
 import { ethers } from "ethers";
 
+import bcrypt from "bcryptjs";
+
+// HOOKS
+import useWallet from "../../hooks/useWallet";
+import { useSnackbar } from "notistack";
+
 const steps = [
   "Pick your username",
   "Backup your wallet",
@@ -47,6 +53,9 @@ const HomeCreateNewWalletStepperSchema = yup.object().shape({
 const HomeCreateNewWalletStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [mnemonic, setMnemonic] = useState("");
+  const { updateEncryptedWalletJSON, updatePassword, updateAddress } =
+    useWallet();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -92,20 +101,48 @@ const HomeCreateNewWalletStepper = () => {
             }}
             onSubmit={async (values) => {
               try {
-                console.log(values);
-                const response = await fetch("http://localhost:5000/wallets", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify(values),
-                });
-
-                // request success
-                if (response.ok) {
-                  handleNext();
+                const {
+                  mnemonic,
+                  password,
+                  verifyPassword,
+                  firstWord,
+                  lastWord,
+                } = values;
+                if (
+                  !mnemonic ||
+                  !ethers.utils.isValidMnemonic(mnemonic) ||
+                  !password ||
+                  !verifyPassword ||
+                  password !== verifyPassword ||
+                  firstWord !== mnemonic.split(" ")[0] ||
+                  lastWord !== mnemonic.split(" ")[11]
+                ) {
+                  throw new Error("Invalid inputs");
                 }
+                // check if the entered mnemonic is valid
+                const walletFromMnemonic = ethers.Wallet.fromMnemonic(mnemonic);
+                // encrypt the wallet using the user's password
+                const encryptedWalletJSON = await walletFromMnemonic.encrypt(
+                  password
+                );
+                updateEncryptedWalletJSON(encryptedWalletJSON);
+                localStorage.setItem(
+                  "encryptedWalletJSON",
+                  encryptedWalletJSON
+                );
+
+                const salt = bcrypt.genSaltSync(10);
+                const hashedPassword = bcrypt.hashSync(password, salt);
+                updatePassword(hashedPassword);
+                localStorage.setItem("password", hashedPassword);
+
+                updateAddress(walletFromMnemonic.address);
+                localStorage.setItem("address", walletFromMnemonic.address);
+                handleNext();
               } catch (err) {
+                enqueueSnackbar(err.message, {
+                  variant: "error",
+                });
                 console.log(err);
               }
             }}

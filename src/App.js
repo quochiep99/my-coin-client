@@ -19,7 +19,6 @@ import useWallet from "./hooks/useWallet";
 
 const App = () => {
   const { isInitialized, encryptedWalletJSON } = useWallet();
-  console.log(useWallet());
   return isInitialized ? (
     <BrowserRouter>
       <CssBaseline />
