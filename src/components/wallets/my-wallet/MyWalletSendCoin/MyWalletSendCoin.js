@@ -19,6 +19,7 @@ import bcrypt from "bcryptjs";
 // HOOKS
 import useWallet from "../../../../hooks/useWallet";
 import { useSnackbar } from "notistack";
+import useBlocks from "../../../../hooks/useBlocks";
 
 // Utils
 import getUnconfirmedTransactions from "../../../../utils/getUnconfirmedTransactions";
@@ -27,6 +28,7 @@ import API_HOST_NAME from "../../../../config";
 const MyWalletSendCoin = () => {
   const { password, encryptedWalletJSON, address, utxos } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
+  const { updateBlocks } = useBlocks();
 
   let funds;
 
@@ -55,7 +57,6 @@ const MyWalletSendCoin = () => {
             utxos: [],
             total: 0,
           };
-          console.log(values);
           let errors = {};
           const { to, amount } = values;
           if (!to) {
@@ -109,7 +110,7 @@ const MyWalletSendCoin = () => {
               },
               decryptedWallet.privateKey
             );
-            const response = await fetch(
+            let response = await fetch(
               `${API_HOST_NAME}/api/unconfirmedTransactions/mine`,
               {
                 method: "POST",
@@ -120,8 +121,8 @@ const MyWalletSendCoin = () => {
               }
             );
             if (response.ok) {
-              const data = await response.json();
-              console.log(data);
+              let data = await response.json();
+              updateBlocks(data.blocks);
               handleClose();
             }
           } catch (err) {

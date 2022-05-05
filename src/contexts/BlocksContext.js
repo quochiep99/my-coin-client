@@ -56,6 +56,7 @@ const reducer = (state, action) => {
 const BlocksContext = React.createContext({
   ...initialStates,
   createBlock: (block) => {},
+  updateBlocks: (blocks) => {},
 });
 
 const BlocksContextProvider = ({ children }) => {
@@ -64,6 +65,9 @@ const BlocksContextProvider = ({ children }) => {
 
   const createBlock = (block) => {
     dispatch({ type: "CREATE_BLOCK", payload: block });
+  };
+  const updateBlocks = (blocks) => {
+    dispatch({ type: "UPDATE_BLOCKS", payload: blocks });
   };
 
   useEffect(() => {
@@ -98,7 +102,7 @@ const BlocksContextProvider = ({ children }) => {
   }, [address, state.blocks, updateUTXOS, utxos]);
 
   return (
-    <BlocksContext.Provider value={{ ...state, createBlock }}>
+    <BlocksContext.Provider value={{ ...state, createBlock, updateBlocks }}>
       {children}
     </BlocksContext.Provider>
   );
