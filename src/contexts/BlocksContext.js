@@ -80,8 +80,19 @@ const BlocksContextProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (state.blocks.length > 0 && !utxos && address) {
-      updateUTXOS(getUTXOS(state.blocks, address));
+    if (state.blocks.length > 0 && address) {
+      const newUTXOS = getUTXOS(state.blocks, address);
+      if (newUTXOS.length !== utxos.length) {
+        updateUTXOS(newUTXOS);
+      } else {
+        if (
+          !newUTXOS.every((element, index) => {
+            return element.hash === utxos[index].hash;
+          })
+        ) {
+          updateUTXOS(newUTXOS);
+        }
+      }
     }
   }, [address, state.blocks, updateUTXOS, utxos]);
 

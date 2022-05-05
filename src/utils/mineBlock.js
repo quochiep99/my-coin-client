@@ -1,6 +1,6 @@
 import sha256 from "js-sha256";
 
-const createBlock = (index, previousHash, data) => {
+const mineBlock = (index, previousHash, data) => {
   let timestamp;
   let nonce;
   let hash;
@@ -35,4 +35,4 @@ const createBlock = (index, previousHash, data) => {
   }
 };
 
-export default createBlock;
+export default mineBlock;

@@ -3,12 +3,12 @@ import React, { useCallback, useEffect, useReducer } from "react";
 import produce from "immer";
 
 const initialStates = {
-  encryptedWalletJSON: null,
-  address: null,
-  username: null,
-  password: null,
-  utxos: null, // unspent transaction outputs
-  isInitialized: true,
+  encryptedWalletJSON: "",
+  address: "",
+  username: "",
+  password: "",
+  utxos: [], // unspent transaction outputs
+  isInitialized: false,
 };
 
 const handlers = {
@@ -83,17 +83,17 @@ const WalletContextProvider = ({ children }) => {
     const localStorageAddress = localStorage.getItem("address");
     const localStoragePassword = localStorage.getItem("password");
     try {
-      const parsedLocalEncryptedWalletJSON = JSON.parse(
-        localStorageEncryptedWalletJSON
-      );
-      if (!localStorageAddress || !localStoragePassword) {
+      if (
+        !localStorageEncryptedWalletJSON ||
+        !localStorageAddress ||
+        !localStoragePassword
+      ) {
         throw new Error("Token invalid");
       }
 
-      dispatch({ type: "UPDATE_IS_INITIALIZE", payload: true });
       dispatch({
         type: "UPDATE_ENCRYPTED_WALLET_JSON",
-        payload: parsedLocalEncryptedWalletJSON,
+        payload: localStorageEncryptedWalletJSON,
       });
       dispatch({
         type: "UPDATE_PASSWORD",
@@ -104,12 +104,11 @@ const WalletContextProvider = ({ children }) => {
         payload: localStorageAddress,
       });
     } catch (err) {
-      dispatch({ type: "UPDATE_IS_INITIALIZE", payload: true });
       localStorage.removeItem("encryptedWalletJSON");
       localStorage.removeItem("password");
       localStorage.removeItem("address");
     } finally {
-      // dispatch({ type: "UPDATE_IS_INITIALIZE", payload: true });
+      dispatch({ type: "UPDATE_IS_INITIALIZE", payload: true });
     }
   }, []);
 

@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 
 // Utils
-import createBlock from "../../../../utils/createBlock";
+import mineBlock from "../../../../utils/mineBlock";
 import signTransaction from "../../../../utils/signTransaction";
 
 // HOOKS
@@ -22,7 +22,7 @@ import ConfirmPasswordDialog from "../ConfirmPasswordDialog";
 import { ethers } from "ethers";
 
 const MyWalletMineReward = () => {
-  const { blocks, addBlock } = useBlocks();
+  const { blocks, createBlock } = useBlocks();
   const { encryptedWalletJSON } = useWallet();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -68,11 +68,7 @@ const MyWalletMineReward = () => {
         },
       ];
       const data = JSON.stringify(transactions);
-      const newBlock = createBlock(
-        latestBlock.index + 1,
-        latestBlock.hash,
-        data
-      );
+      const newBlock = mineBlock(latestBlock.index + 1, latestBlock.hash, data);
       // append new block to the blocks (blockchain)
       // server side
 
@@ -94,7 +90,7 @@ const MyWalletMineReward = () => {
       }
 
       // client side
-      addBlock(newBlock);
+      createBlock(newBlock);
     } catch (err) {
       console.log(err);
     }

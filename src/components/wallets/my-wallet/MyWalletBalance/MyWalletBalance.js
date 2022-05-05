@@ -13,12 +13,13 @@ import { Container } from "@mui/material";
 
 const MyWalletBalance = () => {
   const { utxos } = useWallet();
+  console.log(utxos);
 
   const [balance, setBalance] = useState(null);
 
   useEffect(() => {
-    if (utxos) {
-      let newBalance = 0;
+    let newBalance = 0;
+    if (utxos && utxos.length > 0) {
       for (let i = 0; i < utxos.length; i++) {
         newBalance += utxos[i].amount;
       }
