@@ -12,8 +12,9 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Button from "@mui/material/Button";
 
-import { Link as RouterLink, Outlet } from "react-router-dom";
+import { Link as RouterLink, Outlet, useNavigate } from "react-router-dom";
 
 // MUI ICONS
 import PaidOutlinedIcon from "@mui/icons-material/PaidOutlined";
@@ -21,6 +22,7 @@ import EmojiEventsOutlinedIcon from "@mui/icons-material/EmojiEventsOutlined";
 import IosShareOutlinedIcon from "@mui/icons-material/IosShareOutlined";
 import GetAppOutlinedIcon from "@mui/icons-material/GetAppOutlined";
 import FeaturedPlayListOutlinedIcon from "@mui/icons-material/FeaturedPlayListOutlined";
+import useWallet from "../../../hooks/useWallet";
 
 const ListItemLink = (props) => {
   const { icon, primary, to } = props;
@@ -46,6 +48,8 @@ const ListItemLink = (props) => {
 const drawerWidth = 205;
 
 const MyWalletDrawer = () => {
+  const { signOut } = useWallet();
+  const navigate = useNavigate();
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
@@ -54,9 +58,20 @@ const MyWalletDrawer = () => {
         sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Coinbase dashboard
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            News
           </Typography>
+          <Button
+            color="inherit"
+            sx={{ textTransform: "none" }}
+            onClick={() => {
+              signOut();
+              localStorage.clear();
+              navigate("/");
+            }}
+          >
+            Sign out
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer

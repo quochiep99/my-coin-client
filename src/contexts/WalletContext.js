@@ -41,6 +41,19 @@ const handlers = {
       draft.isInitialized = action.payload;
     });
   },
+
+  SIGNOUT: (state, action) => {
+    console.log("SIGNOUT");
+    // return initialStates;
+    return produce(state, (draft) => {
+      draft.encryptedWalletJSON = "";
+      draft.address = "";
+      draft.username = "";
+      draft.password = "";
+      draft.utxos = [];
+      draft.isInitialized = true;
+    });
+  },
 };
 
 const reducer = (state, action) => {
@@ -53,6 +66,7 @@ const WalletContext = React.createContext({
   updatePassword: (password) => {},
   updateAddress: (address) => {},
   updateUTXOS: (blocks) => {},
+  signOut: () => {},
 });
 
 const WalletContextProvider = ({ children }) => {
@@ -77,6 +91,10 @@ const WalletContextProvider = ({ children }) => {
     dispatch({ type: "UPDATE_UTXOS", payload: utxos });
   }, []);
 
+  const signOut = () => {
+    //
+    dispatch({ type: "SIGNOUT" });
+  };
   useEffect(() => {
     const localStorageEncryptedWalletJSON =
       localStorage.getItem("encryptedWalletJSON") || "";
@@ -120,6 +138,7 @@ const WalletContextProvider = ({ children }) => {
         updatePassword,
         updateUTXOS,
         updateAddress,
+        signOut,
       }}
     >
       {children}
