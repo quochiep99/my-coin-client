@@ -68,7 +68,7 @@ const BlocksContextProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/blocks");
+        const response = await fetch("/api/blocks");
         if (response.ok) {
           const data = await response.json();
           dispatch({ type: "UPDATE_BLOCKS", payload: data.blocks });

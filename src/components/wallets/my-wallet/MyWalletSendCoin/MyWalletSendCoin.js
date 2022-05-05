@@ -108,16 +108,13 @@ const MyWalletSendCoin = () => {
               },
               decryptedWallet.privateKey
             );
-            const response = await fetch(
-              "http://localhost:5000/api/unconfirmedTransactions/mine",
-              {
-                method: "POST",
-                body: JSON.stringify(unconfirmedTransactions),
-                headers: {
-                  "Content-Type": "application/json",
-                },
-              }
-            );
+            const response = await fetch("/api/unconfirmedTransactions/mine", {
+              method: "POST",
+              body: JSON.stringify(unconfirmedTransactions),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
             if (response.ok) {
               const data = await response.json();
               console.log(data);

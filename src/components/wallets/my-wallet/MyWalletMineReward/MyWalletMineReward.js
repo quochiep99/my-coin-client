@@ -93,7 +93,7 @@ const MyWalletMineReward = () => {
               // server side
 
               // Broadcast new block to all the connected nodes
-              const response = await fetch("http://localhost:5000/api/blocks", {
+              const response = await fetch("/api/blocks", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
