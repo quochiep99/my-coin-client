@@ -2,6 +2,7 @@ import React, { useEffect, useReducer } from "react";
 
 import produce from "immer";
 import useWallet from "../hooks/useWallet";
+import API_HOST_NAME from "../config";
 
 const getUTXOS = (blocks, address) => {
   let utxos = [];
@@ -68,7 +69,7 @@ const BlocksContextProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await fetch("/api/blocks");
+        const response = await fetch(`${API_HOST_NAME}/api/blocks`);
         if (response.ok) {
           const data = await response.json();
           dispatch({ type: "UPDATE_BLOCKS", payload: data.blocks });

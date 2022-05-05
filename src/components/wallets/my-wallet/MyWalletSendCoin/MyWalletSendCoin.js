@@ -22,6 +22,7 @@ import { useSnackbar } from "notistack";
 
 // Utils
 import getUnconfirmedTransactions from "../../../../utils/getUnconfirmedTransactions";
+import API_HOST_NAME from "../../../../config";
 
 const MyWalletSendCoin = () => {
   const { password, encryptedWalletJSON, address, utxos } = useWallet();
@@ -108,13 +109,16 @@ const MyWalletSendCoin = () => {
               },
               decryptedWallet.privateKey
             );
-            const response = await fetch("/api/unconfirmedTransactions/mine", {
-              method: "POST",
-              body: JSON.stringify(unconfirmedTransactions),
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
+            const response = await fetch(
+              `${API_HOST_NAME}/api/unconfirmedTransactions/mine`,
+              {
+                method: "POST",
+                body: JSON.stringify(unconfirmedTransactions),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
             if (response.ok) {
               const data = await response.json();
               console.log(data);

@@ -25,6 +25,8 @@ import { Form, Formik } from "formik";
 
 import bcrypt from "bcryptjs";
 
+import API_HOST_NAME from "../../../../config";
+
 const MyWalletMineReward = () => {
   const { blocks, createBlock } = useBlocks();
   const { encryptedWalletJSON } = useWallet();
@@ -93,7 +95,7 @@ const MyWalletMineReward = () => {
               // server side
 
               // Broadcast new block to all the connected nodes
-              const response = await fetch("/api/blocks", {
+              const response = await fetch(`${API_HOST_NAME}/api/blocks`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
