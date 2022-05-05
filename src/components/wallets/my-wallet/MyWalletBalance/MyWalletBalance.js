@@ -15,16 +15,14 @@ const MyWalletBalance = () => {
   const { utxos } = useWallet();
   console.log(utxos);
 
-  const [balance, setBalance] = useState(null);
+  const [balance, setBalance] = useState();
 
   useEffect(() => {
     let newBalance = 0;
-    if (utxos && utxos.length > 0) {
-      for (let i = 0; i < utxos.length; i++) {
-        newBalance += utxos[i].amount;
-      }
-      setBalance(newBalance);
+    for (let i = 0; i < utxos.length; i++) {
+      newBalance += utxos[i].amount;
     }
+    setBalance(newBalance);
   }, [utxos]);
 
   return (
@@ -35,7 +33,7 @@ const MyWalletBalance = () => {
             <Typography variant="subtitle2">Your Balance</Typography>
           </Grid>
           <Grid item sx={{ textAlign: "center" }}>
-            {!balance ? (
+            {typeof balance === "undefined" ? (
               <CircularProgress />
             ) : (
               <Typography variant="h6" fontSize="3.75rem">
