@@ -18,11 +18,7 @@ const validateMnemonic = (value) => {
   if (!value) {
     error = "Mnemonic required";
   } else {
-    try {
-      ethers.Wallet.fromMnemonic(value);
-    } catch (err) {
-      error = "Mnemonic is not valid";
-    }
+    error = !ethers.utils.isValidMnemonic && "Mnemonic invalid";
   }
   return error;
 };

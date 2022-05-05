@@ -21,13 +21,13 @@ root.render(
   <React.StrictMode>
     <SnackbarProvider maxSnack={1}>
       <UnconfirmedTransactionsContextProvider>
-        <BlocksContextProvider>
-          <WalletContextProvider>
+        <WalletContextProvider>
+          <BlocksContextProvider>
             <EnteredPasswordContextProvider>
               <App />
             </EnteredPasswordContextProvider>
-          </WalletContextProvider>
-        </BlocksContextProvider>
+          </BlocksContextProvider>
+        </WalletContextProvider>
       </UnconfirmedTransactionsContextProvider>
     </SnackbarProvider>
   </React.StrictMode>

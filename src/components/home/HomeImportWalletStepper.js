@@ -28,11 +28,14 @@ import { ethers } from "ethers";
 import useWallet from "../../hooks/useWallet";
 import { useSnackbar } from "notistack";
 
+import bcrypt from "bcryptjs";
+
 const steps = ["Import wallet", "Create password"];
 
 const HomeImportWalletStepper = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const { setEncryptedWalletJSON, setPassword } = useWallet();
+  const { updateEncryptedWalletJSON, updatePassword, updateAddress } =
+    useWallet();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleNext = () => {
@@ -74,6 +77,7 @@ const HomeImportWalletStepper = () => {
                 const { mnemonic, password, verifyPassword } = values;
                 if (
                   !mnemonic ||
+                  !ethers.utils.isValidMnemonic(mnemonic) ||
                   !password ||
                   !verifyPassword ||
                   password !== verifyPassword
@@ -86,8 +90,19 @@ const HomeImportWalletStepper = () => {
                 const encryptedWalletJSON = await walletFromMnemonic.encrypt(
                   password
                 );
-                setEncryptedWalletJSON(encryptedWalletJSON);
-                setPassword(password);
+                updateEncryptedWalletJSON(encryptedWalletJSON);
+                localStorage.setItem(
+                  "encryptedWalletJSON",
+                  encryptedWalletJSON
+                );
+
+                const salt = bcrypt.genSaltSync(10);
+                const hashedPassword = bcrypt.hashSync(password, salt);
+                updatePassword(hashedPassword);
+                localStorage.setItem("password", hashedPassword);
+
+                updateAddress(walletFromMnemonic.address);
+                localStorage.setItem("address", walletFromMnemonic.address);
                 handleNext();
               } catch (err) {
                 enqueueSnackbar(err.message, {
