@@ -56,7 +56,7 @@ const MyWalletSendCoin = () => {
           };
           console.log(values);
           let errors = {};
-          const { to, amount, enteredPassword } = values;
+          const { to, amount } = values;
           if (!to) {
             errors.to = "Please enter the address to send to";
           } else if (!ethers.utils.isAddress(to)) {

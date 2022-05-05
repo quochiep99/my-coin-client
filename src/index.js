@@ -13,7 +13,6 @@ import "@fontsource/roboto/700.css";
 // CONTEXTS
 import { BlocksContextProvider } from "./contexts/BlocksContext";
 import { WalletContextProvider } from "./contexts/WalletContext";
-import { EnteredPasswordContextProvider } from "./contexts/EnteredPasswordContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,9 +20,7 @@ root.render(
     <SnackbarProvider maxSnack={1}>
       <WalletContextProvider>
         <BlocksContextProvider>
-          <EnteredPasswordContextProvider>
-            <App />
-          </EnteredPasswordContextProvider>
+          <App />
         </BlocksContextProvider>
       </WalletContextProvider>
     </SnackbarProvider>
