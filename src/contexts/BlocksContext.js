@@ -57,6 +57,7 @@ const BlocksContext = React.createContext({
   ...initialStates,
   createBlock: (block) => {},
   updateBlocks: (blocks) => {},
+  fetchBlocks: () => {},
 });
 
 const BlocksContextProvider = ({ children }) => {
@@ -69,19 +70,20 @@ const BlocksContextProvider = ({ children }) => {
   const updateBlocks = (blocks) => {
     dispatch({ type: "UPDATE_BLOCKS", payload: blocks });
   };
+  const fetchBlocks = async () => {
+    try {
+      const response = await fetch(`${API_HOST_NAME}/api/blocks`);
+      if (response.ok) {
+        const data = await response.json();
+        dispatch({ type: "UPDATE_BLOCKS", payload: data.blocks });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await fetch(`${API_HOST_NAME}/api/blocks`);
-        if (response.ok) {
-          const data = await response.json();
-          dispatch({ type: "UPDATE_BLOCKS", payload: data.blocks });
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    })();
+    fetchBlocks();
   }, []);
 
   useEffect(() => {
@@ -102,7 +104,9 @@ const BlocksContextProvider = ({ children }) => {
   }, [address, state.blocks, updateUTXOS, utxos]);
 
   return (
-    <BlocksContext.Provider value={{ ...state, createBlock, updateBlocks }}>
+    <BlocksContext.Provider
+      value={{ ...state, createBlock, updateBlocks, fetchBlocks }}
+    >
       {children}
     </BlocksContext.Provider>
   );
