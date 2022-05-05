@@ -28,8 +28,8 @@ const handlers = {
   SHOW_IMPORT_WALLET_STEPPER: (state, action) => {
     return produce(state, (draft) => {
       draft.homeCoinbaseWalletCard = false;
-      draft.homeCreateNewWalletStepper = true;
-      draft.homeImportWalletStepper = false;
+      draft.homeCreateNewWalletStepper = false;
+      draft.homeImportWalletStepper = true;
     });
   },
 };
