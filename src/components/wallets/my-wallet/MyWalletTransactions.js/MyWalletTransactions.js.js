@@ -45,7 +45,7 @@ import produce from "immer";
 const MyWalletTransactions = () => {
   const { blocks } = useBlocks();
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="lg">
       <Grid
         container
         direction="column"

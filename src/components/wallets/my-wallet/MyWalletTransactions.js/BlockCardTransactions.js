@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 
 const BlockCardTransactions = ({ transactions }) => {
+  console.log(transactions);
   return (
     <TableContainer
       component={Paper}

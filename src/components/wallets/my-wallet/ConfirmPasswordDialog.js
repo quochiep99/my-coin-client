@@ -6,112 +6,82 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
 
 // MUI LAB COMPONENTS
 import LoadingButton from "@mui/lab/LoadingButton";
 
 // Formik
-import { Formik, Form, Field } from "formik";
+import { Field } from "formik";
 
 // Formik Mui
 import { TextField } from "formik-mui";
 
-// HOOKS
 import useWallet from "../../../hooks/useWallet";
 
-import bcrypt from "bcryptjs";
+const validatePassword = (value, password) => {
+  let error;
+  if (!value) {
+    error = "Please enter your password";
+  }
+  return error;
+};
 
 const ConfirmPasswordDialog = ({
   open,
   handleClose,
-  handleClickMineNewBlock,
+  formik,
+  loadingIndicator,
 }) => {
-  const { password, isInitialized } = useWallet();
-
+  const { password } = useWallet();
   return (
-    <div>
-      <Dialog open={open} onClose={handleClose}>
-        <Formik
-          initialValues={{
-            enteredPassword: "",
+    <Dialog open={open}>
+      <DialogTitle>Confirm password</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          You need to confirm your password before proceeding to your work
+        </DialogContentText>
+        <Field
+          component={TextField}
+          margin="dense"
+          label="Password"
+          type="password"
+          fullWidth
+          variant="outlined"
+          name="enteredPassword"
+          size="small"
+          sx={{ mt: 3 }}
+          autoFocus
+          validate={(value) => {
+            return validatePassword(value, password);
           }}
-          onSubmit={async (values) => {
-            try {
-              const { enteredPassword } = values;
-              await handleClickMineNewBlock(enteredPassword);
-              handleClose();
-            } catch (err) {
-              console.log(err);
-            }
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          variant="outlined"
+          sx={{ textTransform: "none" }}
+          onClick={() => {
+            handleClose();
+            formik.resetForm();
           }}
-          validate={(values) => {
-            let errors = {};
-            if (isInitialized) {
-              const { enteredPassword } = values;
-              if (!enteredPassword) {
-                errors = {
-                  enteredPassword: "Please enter your password",
-                };
-              } else {
-                const passwordIsMatched = bcrypt.compareSync(
-                  enteredPassword,
-                  password
-                );
-                if (!passwordIsMatched) {
-                  errors = {
-                    enteredPassword: "Incorrect password",
-                  };
-                }
-              }
-            }
-            return errors;
-          }}
-          validateOnBlur={false}
-          validateOnChange={false}
         >
-          {(formik) => {
-            return (
-              <Form>
-                <DialogTitle>Confirm password</DialogTitle>
-                <DialogContent>
-                  <DialogContentText>
-                    You need to confirm your password before proceeding to your
-                    work
-                  </DialogContentText>
-                  <Field
-                    component={TextField}
-                    margin="dense"
-                    label="Password"
-                    type="password"
-                    fullWidth
-                    variant="outlined"
-                    name="enteredPassword"
-                    size="small"
-                    sx={{ mt: 3 }}
-                    autoFocus
-                  />
-                </DialogContent>
-                <DialogActions>
-                  {/* <Button type="submit" sx={{ textTransform: "none" }}>
-                    Submit
-                  </Button> */}
-                  <LoadingButton
-                    type="submit"
-                    loading={formik.isSubmitting}
-                    loadingIndicator="Mining..."
-                    variant="contained"
-                    // fullWidth
-                    sx={{ textTransform: "none" }}
-                  >
-                    Submit
-                  </LoadingButton>
-                </DialogActions>
-              </Form>
-            );
+          Cancel
+        </Button>
+        <LoadingButton
+          loading={formik.isSubmitting}
+          loadingIndicator={loadingIndicator}
+          variant="contained"
+          // type="submit"
+          sx={{ textTransform: "none" }}
+          onClick={() => {
+            formik.submitForm();
           }}
-        </Formik>
-      </Dialog>
-    </div>
+        >
+          Submit
+        </LoadingButton>
+      </DialogActions>
+    </Dialog>
   );
 };
 export default ConfirmPasswordDialog;

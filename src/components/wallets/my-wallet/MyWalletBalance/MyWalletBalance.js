@@ -13,7 +13,6 @@ import { Container } from "@mui/material";
 
 const MyWalletBalance = () => {
   const { utxos } = useWallet();
-  console.log(utxos);
 
   const [balance, setBalance] = useState();
 

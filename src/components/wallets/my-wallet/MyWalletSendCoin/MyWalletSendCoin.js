@@ -1,54 +1,198 @@
-import React from "react";
+import React, { useState } from "react";
 
 // MUI COMPONENTS
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
+// Formik
+import { Formik, Form, Field } from "formik";
+
+// Formik Mui
+import { TextField } from "formik-mui";
+
+import { ethers } from "ethers";
+import ConfirmPasswordDialog from "../ConfirmPasswordDialog";
+
+import bcrypt from "bcryptjs";
+
+// HOOKS
+import useWallet from "../../../../hooks/useWallet";
+import { useSnackbar } from "notistack";
+
+// Utils
+import getUnconfirmedTransactions from "../../../../utils/getUnconfirmedTransactions";
+
 const MyWalletSendCoin = () => {
-  const handleClickSend = () => {
-    // Send 10 coins to the provided public address
-    // Satoshi sends 10 coins to Annie
-    // {
-    //   from: "Satoshi",
-    //   to: "Annie",
-    //   amount: 10,
-    // },
-    const unconfirmedTransactions = [
-      {
-        from: "REWARD",
-        to: "Satoshi",
-        amount: 100,
-        status: "spent",
-      },
-      {
-        from: "Satoshi",
-        to: "Annie",
-        amount: 10,
-        status: "unspent",
-      },
-    ];
+  const { password, encryptedWalletJSON, address, utxos } = useWallet();
+  const { enqueueSnackbar } = useSnackbar();
+
+  let funds;
+
+  // ConfirmPasswordDialog
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
   };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  // =============================
 
   return (
     <Container maxWidth="sm" sx={{ mt: "25vh" }}>
-      <Grid container direction="column" spacing={2}>
-        <Grid item>
-          <TextField
-            label="Send to address"
-            variant="outlined"
-            fullWidth
-            placeholder="Send to address"
-            value="Satoshi"
-          />
-        </Grid>
-        <Grid item alignSelf="center">
-          <Button variant="outlined" size="large" onClick={handleClickSend}>
-            Send
-          </Button>
-        </Grid>
-      </Grid>
+      <Formik
+        initialValues={{
+          to: "",
+          amount: "",
+          enteredPassword: "",
+        }}
+        validate={(values) => {
+          funds = {
+            utxos: [],
+            total: 0,
+          };
+          console.log(values);
+          let errors = {};
+          const { to, amount, enteredPassword } = values;
+          if (!to) {
+            errors.to = "Please enter the address to send to";
+          } else if (!ethers.utils.isAddress(to)) {
+            errors.to = "Invalid address format";
+          }
+          if (!amount) {
+            errors.amount = "Please specify the amount to be sent";
+          } else if (amount <= 0) {
+            errors.amount = "Amount must be greater than 0";
+          }
+
+          for (let i = 0; i < utxos.length; i++) {
+            funds.utxos.push(utxos[i]);
+            funds.total += utxos[i].amount;
+            // check if the accumulated funds's total amount is enough for the successful transaction
+            if (funds.total >= amount) {
+              break;
+            }
+          }
+          if (funds.total < amount) {
+            errors.amount =
+              "You do not have enough balance for this transaction";
+          }
+
+          return errors;
+        }}
+        onSubmit={async (values) => {
+          try {
+            const { to, amount, enteredPassword } = values;
+            const passwordIsMatched = bcrypt.compareSync(
+              enteredPassword,
+              password
+            );
+            if (!passwordIsMatched) {
+              enqueueSnackbar("Incorrect password", { variant: "error" });
+              throw new Error("Incorrect password");
+            }
+            const decryptedWallet = await ethers.Wallet.fromEncryptedJson(
+              encryptedWalletJSON,
+              enteredPassword
+            );
+
+            const unconfirmedTransactions = getUnconfirmedTransactions(
+              funds,
+              {
+                from: address,
+                to: to,
+                amount: amount,
+              },
+              decryptedWallet.privateKey
+            );
+            const response = await fetch(
+              "http://localhost:5000/api/unconfirmedTransactions/mine",
+              {
+                method: "POST",
+                body: JSON.stringify(unconfirmedTransactions),
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            );
+            if (response.ok) {
+              const data = await response.json();
+              console.log(data);
+              handleClose();
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }}
+        validateOnBlur={false}
+      >
+        {(formik) => {
+          return (
+            <Form>
+              <Grid container direction="column" spacing={3}>
+                <Grid item>
+                  <ConfirmPasswordDialog
+                    open={open}
+                    handleClose={handleClose}
+                    formik={formik}
+                    loadingIndicator="Sending..."
+                  />
+                </Grid>
+                <Grid item>
+                  <Field
+                    component={TextField}
+                    label="Send to address"
+                    variant="outlined"
+                    fullWidth
+                    placeholder="Send to address"
+                    name="to"
+                    autoFocus
+                  />
+                </Grid>
+                <Grid item>
+                  <Field
+                    component={TextField}
+                    label="Amount"
+                    variant="outlined"
+                    fullWidth
+                    placeholder="0"
+                    name="amount"
+                    type="number"
+                  />
+                </Grid>
+                <Grid item alignSelf="center">
+                  <Button
+                    variant="outlined"
+                    size="large"
+                    // type="submit"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (
+                        formik.touched.to &&
+                        !formik.errors.to &&
+                        formik.touched.amount &&
+                        !formik.errors.amount &&
+                        formik.dirty
+                      ) {
+                        // formik.resetForm();
+                        handleClickOpen();
+                      } else {
+                        formik.setFieldTouched("amount", true);
+                        formik.validateForm();
+                      }
+                    }}
+                  >
+                    Send
+                  </Button>
+                </Grid>
+              </Grid>
+            </Form>
+          );
+        }}
+      </Formik>
     </Container>
   );
 };

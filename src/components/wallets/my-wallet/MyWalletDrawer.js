@@ -43,7 +43,7 @@ const ListItemLink = (props) => {
   );
 };
 
-const drawerWidth = 240;
+const drawerWidth = 205;
 
 const MyWalletDrawer = () => {
   return (
